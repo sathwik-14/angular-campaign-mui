@@ -1,0 +1,40 @@
+.alert-container {
+  height: 80vh;
+  .delete-alert {
+    position: absolute;
+    border-radius: 1rem;
+    border: 1px solid rgba(red, 0.1);
+    width: 80%;
+  }
+}
+.hero-container {
+  width: 100%;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: #b7cdfd 0px 5px 30px -10px;
+  .info-header {
+    color: #478efc;
+  }
+
+  .table {
+    padding: 0 10vw;
+    .table-item {
+      border-bottom: 1px solid rgba(black, 0.1);
+    }
+  }
+
+ 
+}
+
+.fade-in {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 10%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}

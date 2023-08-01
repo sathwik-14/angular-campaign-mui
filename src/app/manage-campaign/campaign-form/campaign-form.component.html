@@ -1,0 +1,796 @@
+<!-- custom linear stepper -->
+
+<!-- <section
+  class="stepper mt-4 d-none d-lg-flex justify-content-between align-items-center"
+>
+  <span class="step-1 fs-5" [ngClass]="currentPageIndex === 0 ? '' : 'text-muted '">
+    <i
+      class="bi me-2"
+      [ngClass]="
+      currentPageIndex === 0 ? 'bi-1-circle-fill text-theme-primary' : 'bi-1-circle'
+      "
+    ></i>
+    Campaign Detail
+  </span>
+  <div class="filler"></div>
+
+  <span class="step-2 fs-5" [ngClass]="currentPageIndex === 1 ? '' : 'text-muted '">
+    <i
+      class="bi me-2"
+      [ngClass]="
+      currentPageIndex === 1 ? 'text-theme-primary bi-2-circle-fill' : 'bi-2-circle'
+      "
+    ></i>
+    Location Detail
+  </span>
+  <div class="filler"></div>
+
+  <span class="step-3 fs-5" [ngClass]="currentPageIndex === 2 ? '' : 'text-muted '">
+    <i
+      class="bi me-2"
+      [ngClass]="
+      currentPageIndex === 2 ? 'text-theme-primary bi-3-circle-fill' : 'bi-3-circle'
+      "
+    ></i>
+    Audience
+  </span>
+  <div class="filler"></div>
+
+  <span class="step-4 fs-5" [ngClass]="currentPageIndex === 3 ? '' : 'text-muted '">
+    <i
+      class="bi me-2"
+      [ngClass]="
+      currentPageIndex === 3 ? 'text-theme-primary bi-4-circle-fill' : 'bi-4-circle'
+      "
+    ></i>
+    Campaign Summary
+  </span>
+</section> -->
+
+<mat-stepper [linear]="true" #stepper>
+  <mat-step [stepControl]="firstFormGroup" label="Campaign Detail">
+    <form [formGroup]="firstFormGroup" class="mt-2">
+      <mat-form-field appearance="outline" class="mb-3 input-full-width">
+        <mat-label>Campaign Name </mat-label>
+        <input matInput type="text" formControlName="name" placeholder="Name" />
+        <mat-error> Enter Campaign Name </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="mb-3 input-full-width">
+        <mat-label>Campaign Objective </mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="objective"
+          placeholder="Objective"
+        />
+        <mat-error> Enter Campaign Objective </mat-error>
+      </mat-form-field>
+      <div class="row">
+        <mat-form-field appearance="outline" class="mb-3 col">
+          <mat-label>Campaign Category</mat-label>
+          <mat-select formControlName="categorySelect">
+            <mat-option value="select" selected>select</mat-option>
+            <mat-option *ngFor="let option of categories" [value]="option">
+              {{ option }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="mb-3 col">
+          <mat-label>Offer Type</mat-label>
+          <mat-select formControlName="offerSelect">
+            <mat-option value="select" selected>select</mat-option>
+            <mat-option *ngFor="let option of categories" [value]="option">
+              {{ option }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="mb-3 input-full-width">
+        <mat-label>Additional Comments</mat-label>
+        <textarea
+          matInput
+          rows="3"
+          formControlName="comments"
+          placeholder="Comments..."
+        ></textarea>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step [stepControl]="secondFormGroup" label="Location Detail">
+    <form [formGroup]="secondFormGroup" class="mt-2">
+      <div class="d-flex flex-column flex-lg-row">
+        <div class="d-flex flex-column gap-2" formArrayName="locations">
+          <mat-form-field appearance="outline">
+            <mat-label>Location Detail (Optional)</mat-label>
+            <input
+              matInput
+              type="text"
+              name="location"
+              placeholder="Add Location"
+              (change)="addLocation(place)"
+              #place
+            />
+          </mat-form-field>
+
+          <div class="mb-3 d-flex">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7778.612017809424!2d74.83442707439495!3d12.888034113642867!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba35ba59c0c7c3d%3A0x857ed9a4e15efd09!2sAjantha%20business%20centre!5e0!3m2!1sen!2sin!4v1689769326528!5m2!1sen!2sin"
+              width="280"
+              style="border: 0"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+        </div>
+
+        <div class="col px-1 px-lg-5 mt-4">
+          <div class="d-flex flex-column gap-2 justify-content-between">
+            <mat-label>Locations</mat-label>
+            <div class="places" *ngIf="locations.length > 0">
+              <div
+                class="d-flex mb-2 fs-6 w-100 align-items-center gap-2"
+                *ngFor="let place of locations.controls; let i = index"
+              >
+                <div>{{ i + 1 }}</div>
+                <div class="d-flex flex-grow-1 align-items-center">
+                  <input
+                    #place
+                    matInput
+                    class="list-name"
+                    [ngClass]="{ 'edit-mode': isEditable(i) }"
+                    (blur)="toggleEditable(null)"
+                    [value]="place.value"
+                    [readonly]="isEditable(i)"
+                  />
+                  <button
+                    mat-icon-button
+                    *ngIf="!isEditable(i)"
+                    (click)="toggleEditable(i)"
+                  >
+                    <mat-icon color="primary">edit</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    *ngIf="isEditable(i)"
+                    (click)="toggleEditable(i)"
+                  >
+                    <mat-icon class="primary">check</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="deleteLocation(i)">
+                    <mat-icon color="warn" fontIcon="delete"></mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="text-center bg-light p-1" *ngIf="locations.length == 0">
+              No location added!
+            </div>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Radius</mat-label>
+              <mat-select>
+                <mat-option value="select" selected>select</mat-option>
+                <mat-option *ngFor="let option of categories" [value]="option">
+                  {{ option }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step>
+    <ng-template matStepLabel>Audience</ng-template>
+    <div class="d-flex flex-column mt-2">
+      <mat-form-field appearance="outline">
+        <mat-label>Audience</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Search"
+          aria-label="Text input with dropdown button"
+        />
+        <button matSuffix mat-icon-button (click)="toggleBrowse()">
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <div
+        class="browse-container d-flex flex-column mb-3 flex-lg-row"
+        *ngIf="browse"
+      >
+        <div class="d-flex flex-column industry browse-category">
+          <div class="heading text-muted">Industry</div>
+          <div
+            class="option d-flex align-items-center justify-content-between"
+            [ngClass]="category ? 'active' : ''"
+            (mouseover)="toggleCategory()"
+          >
+            <div class="d-flex flex-column">
+              <span class="h6">Demography</span>
+              <div class="text-muted">10 Categories</div>
+            </div>
+            <mat-icon class="ms-5">chevron_right</mat-icon>
+          </div>
+          <div class="option d-flex align-items-center justify-content-between">
+            <div class="d-flex flex-column">
+              <span class="h6">Geography</span>
+              <div class="text-muted">5 Categories</div>
+            </div>
+            <mat-icon class="ms-5">chevron_right</mat-icon>
+          </div>
+          <div class="option d-flex align-items-center justify-content-between">
+            <div class="d-flex flex-column">
+              <span class="h6">Commercial Relevance</span>
+              <div class="text-muted">11 Categories</div>
+            </div>
+            <mat-icon class="ms-5">chevron_right</mat-icon>
+          </div>
+        </div>
+
+        <div
+          class="d-flex flex-column category browse-category"
+          *ngIf="category"
+        >
+          <div class="heading text-muted">Category</div>
+          <div
+            class="option d-flex align-items-center justify-content-between"
+            [ngClass]="application ? 'active' : ''"
+            (mouseenter)="toggleApplication()"
+          >
+            <div class="d-flex flex-column">
+              <span class="h6">Age</span>
+              <div class="text-muted">6 Categories</div>
+            </div>
+            <mat-icon class="ms-5">chevron_right</mat-icon>
+          </div>
+          <div class="option d-flex align-items-center justify-content-between">
+            <div class="d-flex flex-column">
+              <span class="h6">Gender</span>
+              <div class="text-muted">7 Categories</div>
+            </div>
+            <mat-icon class="ms-5">chevron_right</mat-icon>
+          </div>
+          <div class="option d-flex align-items-center justify-content-between">
+            <div class="d-flex flex-column">
+              <span class="h6">360 Labels</span>
+              <div class="text-muted">7 Categories</div>
+            </div>
+            <mat-icon class="ms-5">chevron_right</mat-icon>
+          </div>
+          <div class="option d-flex align-items-center justify-content-between">
+            <div class="d-flex flex-column">
+              <span class="h6">Handset</span>
+              <div class="text-muted">7 Categories</div>
+            </div>
+            <mat-icon class="ms-5">chevron_right</mat-icon>
+          </div>
+        </div>
+
+        <div
+          class="d-flex flex-column application browse-category"
+          *ngIf="application"
+        >
+          <div class="heading text-muted">Application</div>
+          <div class="form-check my-1 d-flex gap-2">
+            <mat-checkbox id="flexCheckDefault"></mat-checkbox>
+            &lt; 20
+            <div class="text-muted ms-auto">3.2M</div>
+          </div>
+          <div class="form-check my-1 d-flex gap-2">
+            <mat-checkbox id="flexCheckDefault" />
+            <label for="flexCheckDefault">
+              20 - 29
+            </label>
+            <div class="text-muted ms-auto">7.5M</div>
+          </div>
+          <div class="form-check my-1 d-flex gap-2">
+            <mat-checkbox value="" id="flexCheckDefault" />
+            <label for="flexCheckDefault">
+              30 - 39
+            </label>
+            <div class="text-muted ms-auto">7.2M</div>
+          </div>
+          <div class="form-check my-1 d-flex gap-2">
+            <mat-checkbox value="" id="flexCheckDefault" />
+            <label for="flexCheckDefault">
+              40 - 49
+            </label>
+            <div class="text-muted ms-auto">12.8M</div>
+          </div>
+          <div class="form-check my-1 d-flex gap-2">
+            <mat-checkbox value="" id="flexCheckDefault" />
+            <label for="flexCheckDefault">
+              50 - 59
+            </label>
+            <div class="text-muted ms-auto">2.8M</div>
+          </div>
+          <div class="form-check my-1 d-flex gap-2">
+            <mat-checkbox value="" id="flexCheckDefault" />
+            <label for="flexCheckDefault">
+              &ge; 60
+            </label>
+            <div class="text-muted ms-auto">2.6M</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="my-2 fs-4 text-center text-muted" *ngIf="!browse">
+        No Audiences
+      </div>
+    </div>
+
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button matStepperNext>Next</button>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Campaign Summary</ng-template>
+    <p>You are now done.</p>
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button matStepperNext>Next</button>
+    </div>
+  </mat-step>
+</mat-stepper>
+
+<!-- reactive form beginning and first page  -->
+
+<!-- <form [formGroup]="campaignForm" (ngSubmit)="submitForm()"> -->
+<!-- <section
+    class="form-container d-flex flex-column container p-4 mt-lg-3"
+    *ngIf="currentPageIndex === 0"
+  >
+    <div class="mb-3">
+      <label for="name" class="form-label"
+        >Campaign Name <span class="text-danger">*</span></label
+      >
+      <input
+        type="text"
+        formControlName="name"
+        (input)="updateCampaignName()"
+        id="name"
+        class="form-control shadow-none"
+        placeholder="Name"
+      />
+      <span
+        class="text-danger mt-2"
+        *ngIf="name && name.invalid && name.touched"
+        >Enter Campaign Name</span
+      >
+    </div>
+
+    <div class="mb-3">
+      <label for="objective" class="form-label"
+        >Campaign Objective <span class="text-danger">*</span></label
+      >
+      <input
+        type="text"
+        formControlName="objective"
+        placeholder="Objective"
+        class="form-control shadow-none"
+        id="objective"
+      />
+      <span
+        class="text-danger mt-2"
+        *ngIf="objective && objective.invalid && objective.touched"
+        >Enter Campaign Objective</span
+      >
+    </div>
+
+    <div class="d-flex gap-2">
+      <div class="mb-3 col">
+        <label for="category" class="">Campaign Category </label>
+
+        <select
+          class="form-select shadow-none"
+          formControlName="categorySelect"
+        >
+          <option value="select" selected>select</option>
+          <option *ngFor="let option of categories" [ngValue]="option">
+            {{ option }}
+          </option>
+        </select>
+      </div>
+
+      <div class="mb-3 col">
+        <label for="category" class="">Offer Type </label>
+
+        <select class="form-select shadow-none" formControlName="offerSelect">
+          <option value="select" selected>select</option>
+          <option *ngFor="let option of categories" [ngValue]="option">
+            {{ option }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="exampleFormControlTextarea1" class="form-label"
+        >Additional Comments
+      </label>
+      <textarea
+        class="form-control shadow-none"
+        id="exampleFormControlTextarea1"
+        rows="3"
+        formControlName="comments"
+        placeholder="Comments..."
+      ></textarea>
+    </div>
+
+    <button
+      class="btn btn-md ms-auto btn-primary-theme"
+      [disabled]="name!.invalid || objective!.invalid"
+      (click)="nextPage()"
+    >
+      Next
+    </button>
+  </section> -->
+
+<!-- form second page -->
+
+<section
+  class="form-container d-flex flex-column container p-4 mt-lg-3"
+  *ngIf="currentPageIndex === 1"
+>
+  <div class="d-flex flex-column flex-lg-row">
+    <div class="d-flex flex-column gap-2" formArrayName="locations">
+      <label for="category"
+        >Location Detail (Optional) &nbsp;<i
+          class="bi bi-info-circle-fill text-muted"
+        ></i
+      ></label>
+
+      <input
+        type="text"
+        class="form-control"
+        name="location"
+        placeholder="Add Location"
+        (change)="addLocation(place)"
+        #place
+      />
+
+      <div class="mb-3 d-flex">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7778.612017809424!2d74.83442707439495!3d12.888034113642867!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba35ba59c0c7c3d%3A0x857ed9a4e15efd09!2sAjantha%20business%20centre!5e0!3m2!1sen!2sin!4v1689769326528!5m2!1sen!2sin"
+          width="280"
+          style="border: 0"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+    </div>
+
+    <div class="col px-1 px-lg-5 mt-4">
+      <div class="d-flex flex-column gap-2 justify-content-between">
+        <label class="form-label">Locations</label>
+        <ng-container *ngIf="locations.length > 0">
+          <div class="places">
+            <div
+              class="d-flex mb-2 fs-6 align-items-center justify-content-center gap-2"
+              *ngFor="let place of locations.controls; let i = index"
+            >
+              <div class="">{{ i + 1 }}</div>
+              <div class="bg-light flex-grow-1 d-flex">
+                <input
+                  #place
+                  type="text"
+                  class="bg-light flex-grow-1 ps-1 list-name"
+                  [ngClass]="{ 'edit-mode': isEditable(i) }"
+                  (blur)="toggleEditable(null)"
+                  [value]="place.value"
+                  [readonly]="!isEditable(i)"
+                />
+                <i
+                  class="bi bi-pencil-square pe-1"
+                  (click)="toggleEditable(i)"
+                  *ngIf="!isEditable(i)"
+                ></i>
+                <i
+                  class="bi bi-check2 pe-1"
+                  *ngIf="isEditable(i)"
+                  (click)="toggleEditable(i)"
+                ></i>
+              </div>
+              <div class="">
+                <i class="bi bi-trash" (click)="deleteLocation(i)"></i>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="locations.length == 0">
+          <div class="text-center bg-light p-1">No location added !</div>
+        </ng-container>
+
+        <label for="category mt-auto">Radius</label>
+
+        <select
+          class="form-select mb-3 shadow-none"
+          aria-label="Default select example"
+        >
+          <option selected>100M</option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex">
+    <div class="btn btn-md btn-secondary-theme" (click)="prevPage()">Back</div>
+
+    <div class="btn btn-md ms-auto btn-primary-theme" (click)="nextPage()">
+      Next
+    </div>
+  </div>
+</section>
+
+<!-- form third page  -->
+
+<section
+  class="form-container d-flex flex-column container p-4 mt-lg-3"
+  *ngIf="currentPageIndex === 2"
+>
+  <div class="d-flex flex-column">
+    <div>
+      <label for="category"
+        >Audience &nbsp;<i class="bi bi-info-circle-fill text-muted"></i
+      ></label>
+    </div>
+    <div class="input-group mt-3">
+      <div class="input-group mb-1">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search"
+          aria-label="Text input with dropdown button"
+        />
+        <button
+          class="btn btn-outline-secondary dropdown-toggle"
+          type="button"
+          (click)="toggleBrowse()"
+        >
+          Browse
+        </button>
+      </div>
+    </div>
+
+    <div class="browse-container d-flex flex-column flex-lg-row" *ngIf="browse">
+      <div class="d-flex flex-column industry browse-category flex-grow-1">
+        <div class="heading text-muted">Industry</div>
+        <div
+          class="option d-flex align-items-center justify-content-between"
+          [ngClass]="category ? 'active' : ''"
+          (mouseenter)="toggleCategory()"
+        >
+          <div class="d-flex flex-column">
+            <span class="h6">Demography</span>
+            <div class="text-muted">10 Categories</div>
+          </div>
+          <mat-icon class="ms-5">chevron_right</mat-icon>
+        </div>
+        <div class="option d-flex align-items-center justify-content-between">
+          <div class="d-flex flex-column">
+            <span class="h6">Geography</span>
+            <div class="text-muted">5 Categories</div>
+          </div>
+          <mat-icon class="ms-5">chevron_right</mat-icon>
+        </div>
+        <div class="option d-flex align-items-center justify-content-between">
+          <div class="d-flex flex-column">
+            <span class="h6">Commercial Relevance</span>
+            <div class="text-muted">11 Categories</div>
+          </div>
+          <mat-icon class="ms-5">chevron_right</mat-icon>
+        </div>
+      </div>
+      <div class="d-flex flex-column category browse-category" *ngIf="category">
+        <div class="heading text-muted">Category</div>
+        <div
+          class="option d-flex align-items-center justify-content-between"
+          [ngClass]="application ? 'active' : ''"
+          (mouseenter)="toggleApplication()"
+        >
+          <div class="d-flex flex-column">
+            <span class="h6">Age</span>
+            <div class="text-muted">6 Categories</div>
+          </div>
+          <mat-icon class="ms-5">chevron_right</mat-icon>
+        </div>
+        <div class="option d-flex align-items-center justify-content-between">
+          <div class="d-flex flex-column">
+            <span class="h6">Gender</span>
+            <div class="text-muted">7 Categories</div>
+          </div>
+          <mat-icon class="ms-5">chevron_right</mat-icon>
+        </div>
+        <div class="option d-flex align-items-center justify-content-between">
+          <div class="d-flex flex-column">
+            <span class="h6">360 Labels</span>
+            <div class="text-muted">7 Categories</div>
+          </div>
+          <mat-icon class="ms-5">chevron_right</mat-icon>
+        </div>
+        <div class="option d-flex align-items-center justify-content-between">
+          <div class="d-flex flex-column">
+            <span class="h6">Handset</span>
+            <div class="text-muted">7 Categories</div>
+          </div>
+          <mat-icon class="ms-5">chevron_right</mat-icon>
+        </div>
+      </div>
+      <div
+        class="d-flex flex-column application browse-category"
+        *ngIf="application"
+      >
+        <div class="heading text-muted">Application</div>
+        <div class="form-check my-1 d-flex gap-2">
+          <input class="form-check-input" value="" id="flexCheckDefault" />
+          <label class="form-check-label" for="flexCheckDefault">
+            &lt; 20
+          </label>
+          <div class="text-muted ms-auto">3.2M</div>
+        </div>
+        <div class="form-check my-1 d-flex gap-2">
+          <input class="form-check-input" value="" id="flexCheckDefault" />
+          <label class="form-check-label" for="flexCheckDefault">
+            20 - 29
+          </label>
+          <div class="text-muted ms-auto">7.5M</div>
+        </div>
+        <div class="form-check my-1 d-flex gap-2">
+          <input class="form-check-input" value="" id="flexCheckDefault" />
+          <label class="form-check-label" for="flexCheckDefault">
+            30 - 39
+          </label>
+          <div class="text-muted ms-auto">7.2M</div>
+        </div>
+        <div class="form-check my-1 d-flex gap-2">
+          <input class="form-check-input" value="" id="flexCheckDefault" />
+          <label class="form-check-label" for="flexCheckDefault">
+            40 - 49
+          </label>
+          <div class="text-muted ms-auto">12.8M</div>
+        </div>
+        <div class="form-check my-1 d-flex gap-2">
+          <input class="form-check-input" value="" id="flexCheckDefault" />
+          <label class="form-check-label" for="flexCheckDefault">
+            50 - 59
+          </label>
+          <div class="text-muted ms-auto">2.8M</div>
+        </div>
+        <div class="form-check my-1 d-flex gap-2">
+          <input class="form-check-input" value="" id="flexCheckDefault" />
+          <label class="form-check-label" for="flexCheckDefault">
+            &ge; 60
+          </label>
+          <div class="text-muted ms-auto">2.6M</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="my-2 fs-4 text-center text-muted">No Audiences</div>
+  </div>
+
+  <div class="d-flex">
+    <div class="btn btn-md btn-secondary-theme" (click)="prevPage()">Back</div>
+
+    <div class="btn btn-md ms-auto btn-primary-theme" (click)="nextPage()">
+      Next
+    </div>
+  </div>
+</section>
+
+<!-- form fourth page  -->
+
+<section
+  class="form-container d-flex flex-column container p-4 mt-lg-3"
+  *ngIf="currentPageIndex === 3"
+>
+  <div class="d-flex flex-column gap-3 mb-3">
+    <div class="fs-7 text-muted">
+      Name : <span class="text-dark">{{ campaignForm.value.name }}</span>
+    </div>
+    <div class="fs-7 text-muted">
+      Objective :
+      <span class="text-dark">{{ campaignForm.value.objective }}</span>
+    </div>
+    <div class="fs-7 text-muted">
+      Category :
+      <span class="text-dark badge bg-info">{{
+        campaignForm.value.categorySelect
+      }}</span>
+    </div>
+    <div class="fs-7 text-muted">
+      Offer Type :
+      <span class="text-dark badge bg-info">{{
+        campaignForm.value.offerSelect
+      }}</span>
+    </div>
+    <div class="fs-7 text-muted">
+      Comments :
+      <span class="text-dark">{{ campaignForm.value.comments }}</span>
+    </div>
+    <div class="fs-7 text-muted">
+      Locations :
+      <span
+        Class="text-dark mx-1"
+        *ngFor="let location of locations.controls; let i = index"
+        >{{ location.value }}
+        <ng-container *ngIf="i < locations.controls.length - 1">,</ng-container>
+      </span>
+    </div>
+    <div class="text-danger">
+      NOTE : Make sure all details are entered properly before submitting.
+    </div>
+  </div>
+
+  <div class="d-flex">
+    <div class="btn btn-md btn-secondary-theme" (click)="prevPage()">Back</div>
+    <div class="btn btn-md ms-auto btn-primary-theme" (click)="submitForm()">
+      Submit
+
+      <svg
+        *ngIf="submitted"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        viewBox="0 0 100 100"
+        xml:space="preserve"
+        style="enable-background: new 0 0 100 100"
+        fill="#000000"
+        width="20px"
+        height="20px"
+      >
+        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g
+          id="SVGRepo_tracerCarrier"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></g>
+        <g id="SVGRepo_gCarrier">
+          <circle
+            cx="50"
+            cy="50"
+            r="40"
+            stroke="#ffffff"
+            fill="none"
+            stroke-width="8"
+            stroke-dasharray="226.1946710584651 78.73155701948866"
+            transform="rotate(0.63606 50 50)"
+          >
+            <animateTransform
+              attributeName="transform"
+              type="rotate"
+              repeatCount="indefinite"
+              dur="1.923076923076923s"
+              keyTimes="0;1"
+              values="0 50 50;360 50 50"
+            ></animateTransform>
+          </circle>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+<!-- </form> -->
+
+<!-- end of form  -->

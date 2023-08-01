@@ -1,0 +1,69 @@
+<!-- confirm delete alert  -->
+
+<!-- campaign details table  -->
+<mat-card
+  class="container pt-3"
+  [ngClass]="!showAlert ? 'fade-in' : ''"
+  *ngIf="!showAlert"
+>
+<mat-card-content>
+  <p class="text-center h4 mb-2 info-header">Campaign Details</p>
+  <div>
+    <p class="fs-7 d-flex table-item justify-content-between">
+      <span class="h6">Id:&nbsp;</span>
+      {{ foundObject["id"] ? foundObject["id"] : "NA" }}
+    </p>
+    <p class="fs-7 d-flex table-item justify-content-between">
+      <span class="h6">Name:&nbsp;</span>
+      {{ foundObject["name"] ? foundObject["name"] : "NA" }}
+    </p>
+    <p class="fs-7 d-flex table-item justify-content-between">
+      <span class="h6">Objective:&nbsp;</span>
+      {{ foundObject["objective"] ? foundObject["objective"] : "NA" }}
+    </p>
+    <p class="fs-7 d-flex table-item justify-content-between">
+      <span class="h6">Category Type:&nbsp;</span>
+      {{ foundObject["category"] ? foundObject["category"] : "NA" }}
+    </p>
+    <p class="fs-7 d-flex table-item justify-content-between">
+      <span class="h6">Offer Type:&nbsp;</span>
+      {{ foundObject["offer"] ? foundObject["offer"] : "NA" }}
+    </p>
+    <p class="fs-7 d-flex table-item justify-content-between">
+      <span class="h6">Locations:&nbsp;</span>
+      <span *ngIf="!foundObject['location']">NA</span>
+      <ng-container *ngIf="foundObject['location']">
+        {{ foundObject["location"].value }}
+      </ng-container>
+    </p>
+    <p class="fs-7 d-flex table-item justify-content-between">
+      <span class="h6">Status:&nbsp;</span>
+      {{ foundObject["status"] ? foundObject["status"] : "NA" }}
+    </p>
+    <p class="fs-7 d-flex table-item justify-content-between">
+      <span class="h6">CTR:&nbsp;</span>
+      {{ foundObject["ctr"] ? foundObject["ctr"] : "NA" }}
+    </p>
+    <p class="fs-7 d-flex table-item justify-content-between">
+      <span class="h6">Start Date:&nbsp;</span>
+      {{
+        foundObject["start date"]
+          ? (foundObject["start date"] | date : "yyyy-MM-dd")
+          : "NA"
+      }}
+    </p>
+  </div>
+</mat-card-content>
+  <div class="text-center mb-3">
+    <button mat-raised-button color="warn" (click)="openDialog()">
+      Delete Campaign<mat-icon matIconPrefix>delete</mat-icon>
+    </button>
+  </div>
+  <div class="text-center mb-3">
+    <button mat-button (click)="goBack()">
+      Back
+      <mat-icon >west</mat-icon>
+      
+    </button>
+  </div>
+</mat-card>
