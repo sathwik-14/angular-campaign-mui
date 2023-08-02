@@ -26,7 +26,6 @@ $breakpoint-tablet: 769px;
     &:hover {
       cursor: pointer;
       transform: scale(1.3);
-
     }
   }
 
@@ -40,6 +39,9 @@ $breakpoint-tablet: 769px;
     background-color: #f4f3f4 !important;
     color: #478efc !important;
     padding: .5rem;
+    mat-icon {
+      transform: scale(1.3);
+    }
   }
 }
 
