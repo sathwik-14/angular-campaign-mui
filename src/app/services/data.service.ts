@@ -1,79 +1,82 @@
 // shared-data.service.ts
-import { Observable, of } from 'rxjs';
-import { Injectable } from '@angular/core';
-import { CampaignInterface } from '../manage-campaign/types/campaign.interface';
-
+import { Observable, of, catchError, map, tap } from "rxjs";
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { CampaignInterface } from "../manage-campaign/types/campaign.interface";
+import { MessageService } from "./message-service.service";
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class SharedDataService {
+  constructor(
+    private http: HttpClient,
+    private messageService: MessageService
+  ) {}
 
-  
-  campaignData: CampaignInterface[] =[
-    {
-      "id": "P001",
-      "name": "Summer Sale",
-      "status": "Completed",
-      "ctr": 3.2,
-      "start date": "2023-03-01"
-    },
-    {
-      "id": "P002",
-      "name": "Back to School",
-      "status": "Draft",
-      "ctr": 2.8,
-      "start date": "2023-04-15"
-    },
-    {
-      "id": "P003",
-      "name": "Holiday Specials",
-      "status": "Completed",
-      "ctr": 4.1,
-      "start date": "2023-05-20"
-    },
-    {
-      "id": "P004",
-      "name": "New Year's Countdown",
-      "status": "Scheduled",
-      "ctr": 0,
-      "start date": "2023-06-25"
-    },
-    {
-      "id": "P005",
-      "name": "Spring Promotion",
-      "location": {
-        'value' : [
-          "sullia","puttur"
-        ]
-      },
-      "status": "Scheduled",
-      "ctr": 1.9,
-      "start date": "2023-07-10"
-    }
-  ]
-  // Add methods to access and modify the data as needed
-
-  getData(): Observable<any> {
-    return of(this.campaignData);
+  private log(message: string) {
+    this.messageService.add(`HeroService: ${message}`);
   }
 
-  addData(newItem: any): void {
-    length =this.campaignData.length+1
-    let newid: String ='P'
-    let idnum = length
-    if (length < 10)
-      newid +='00'+idnum
-    else if (length>=10 && length <100)
-      newid +='0'+idnum
-    newItem.id = newid
-    newItem.status = "Draft";
-    newItem['start date'] = Date.now();
-    newItem.ctr = 0;
-    this.campaignData.push(newItem);
+  httpOptions = {
+    headers: new HttpHeaders({ "Content-Type": "application/json" }),
+  };
+
+  /**
+   * Handle Http operation that failed.
+   * Let the app continue.
+   *
+   * @param operation - name of the operation that failed
+   * @param result - optional value to return as the observable result
+   */
+  private handleError<T>(operation = "operation", result?: T) {
+    return (error: any): Observable<T> => {
+      // TODO: send the error to remote logging infrastructure
+      console.error(error); // log to console instead
+
+      // TODO: better job of transforming error for user consumption
+      this.log(`${operation} failed: ${error.message}`);
+
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
   }
 
-  deleteData(id:any):void {
-    let arrayItem = this.campaignData.findIndex(c => c.id === id)
-    this.campaignData.splice(arrayItem,1)
+  private campaignUrl = "api/campaigns"; // URL to web api
+  /** GET heroes from the server */
+  getCampaigns(): Observable<CampaignInterface[]> {
+    return this.http.get<CampaignInterface[]>(this.campaignUrl).pipe(
+      tap((_) => this.log("fetched heroes")),
+      catchError(this.handleError<CampaignInterface[]>("getCampaign", []))
+    );
+  }
+
+  /** GET hero by id. Will 404 if id not found */
+  getCampaign(id: string): Observable<CampaignInterface> {
+    const url = `${this.campaignUrl}/${id}`;
+    return this.http.get<CampaignInterface>(url).pipe(
+      tap((_) => this.log(`fetched hero id=${id}`)),
+      catchError(this.handleError<CampaignInterface>(`getHero id=${id}`))
+    );
+  }
+
+  addCampaign(campaign: CampaignInterface): Observable<CampaignInterface> {
+    return this.http
+      .post<CampaignInterface>(this.campaignUrl, campaign, this.httpOptions)
+      .pipe(
+        tap((newCampaign: CampaignInterface) =>
+          this.log(`added campaign w/ id=${newCampaign.id}`)
+        ),
+        catchError(this.handleError<CampaignInterface>("addCampaign"))
+      );
+  }
+
+  /** DELETE: delete the hero from the server */
+  deleteCampaign(id: string): Observable<CampaignInterface> {
+    const url = `${this.campaignUrl}/${id}`;
+
+    return this.http.delete<CampaignInterface>(url, this.httpOptions).pipe(
+      tap((_) => this.log(`deleted hero id=${id}`)),
+      catchError(this.handleError<CampaignInterface>("deleteHero"))
+    );
   }
 }

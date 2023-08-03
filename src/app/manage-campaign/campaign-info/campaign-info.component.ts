@@ -39,10 +39,11 @@ export class CampaignInfoComponent implements OnInit {
 
   ngOnInit() {
     this.itemId = this.route.snapshot.paramMap.get('id')!;
-    this.sharedDataService.getData().subscribe((data) => {
-      this.campaigns = data;
-    });
-    this.foundObject = this.campaigns.find((obj) => obj['id'] === this.itemId)!;
+    this.sharedDataService.getCampaign(this.itemId).subscribe(data => {
+      this.foundObject = data;
+    })
+    
+
   }
 
   openDialog(): void {
@@ -66,13 +67,15 @@ export class CampaignInfoComponent implements OnInit {
   providers:[SharedDataService],
   selector: 'dialog-overview-example-dialog',
   template: `
-    <div mat-dialog-title>Confirm Delete</div>
+    <div mat-dialog-title style="color: red;vertical-align:middle;">
+    <mat-icon  fontIcon="error"></mat-icon>
+    Confirm Delete</div>
     <p mat-dialog-content>
       Are you sure you want to delete {{ data.name }} campaign ?
     </p>
     <div mat-dialog-actions>
-      <button mat-button (click)="onNoClick()">Cancel</button>
-      <button mat-button color="warn"  (click)="deleteData()"  cdkFocusInitial>
+      <button mat-button mat-dialog-close>Cancel</button>
+      <button mat-button color="warn" (click)="deleteData()" cdkFocusInitial>
         Delete
         <mat-icon fontIcon="delete"></mat-icon>
       </button>
@@ -81,7 +84,6 @@ export class CampaignInfoComponent implements OnInit {
   styleUrls: ['./campaign-info.component.scss'],
 })
 export class DialogOverviewExampleDialog {
-  deleted: boolean = false;
   constructor(private sharedDataService: SharedDataService,
     private router: Router,
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
@@ -89,12 +91,10 @@ export class DialogOverviewExampleDialog {
   ) {}
 
   deleteData() {
-    this.deleted = true;
-    setTimeout(() => {
-      this.sharedDataService.deleteData(this.data.id);
+      // this.sharedDataService.deleteData(this.data.id);
+      this.sharedDataService.deleteCampaign(this.data.id).subscribe();
       this.onNoClick()
       this.router.navigate(['/campaign']);
-    }, 1000);
   }
 
   onNoClick(): void {

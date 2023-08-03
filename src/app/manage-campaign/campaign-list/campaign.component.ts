@@ -10,52 +10,44 @@ import {MatSort, Sort, MatSortModule} from '@angular/material/sort';
   styleUrls: ['./campaign.component.scss'],
 })
 export class CampaignComponent implements OnInit{
-data:any;
+  dataSource = new MatTableDataSource<CampaignInterface>;
+
   constructor(private dataService: SharedDataService,) { }
 
-  ngOnInit(): void {
-    this.dataService.getData().subscribe((data) => (this.campaignData = data));
-    this.data = new MatTableDataSource(this.campaignData);
+  ngOnInit(){
+    this.getCampaignData()
   }
-  campaignData: CampaignInterface[] = [];
-  displayedColumns = ['id', 'name', 'status', 'ctr', 'start date', 'Actions']
+  displayedColumns = ['id', 'name', 'status', 'ctr', 'start date']
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngAfterViewInit() {
-    this.data.sort = this.sort;
+
+  getCampaignData(): void {
+    this.dataService.getCampaigns().subscribe((data) => {
+      this.dataSource.data = data;
+      this.dataSource.sort = this.sort;
+    });
   }
+
+  addCampaign(newCampaign: CampaignInterface) {   
+    newCampaign.status = "Draft"
+    newCampaign.ctr = 0
+    newCampaign['start date'] = Date.now().toString(); 
+    this.dataService.addCampaign(newCampaign as CampaignInterface)
+    .subscribe((campaign :any) => {
+      this.getCampaignData()
+    });
+  }
+
   newCampaignName: string  = 'New Campaign';
   showForm: boolean = false;
   ascOrder = true;
 
   toggleForm() {
     this.showForm = !this.showForm;
+    this.getCampaignData()
   }
 
   onCampaignNameChange(newName: string) {
     this.newCampaignName = newName;
-  }
-
-
-
-  sortDate() {
-    if (this.ascOrder) {
-      this.campaignData = this.campaignData.sort(
-        (a: CampaignInterface, b: CampaignInterface) => {
-          const date1 = new Date(a['start date']).getTime();
-          const date2 = new Date(b['start date']).getTime();
-          return date2 - date1;
-        }
-      );
-    } else {
-      this.campaignData = this.campaignData.sort(
-        (a: CampaignInterface, b: CampaignInterface) => {
-          const date1 = new Date(a['start date']).getTime();
-          const date2 = new Date(b['start date']).getTime();
-          return date1 - date2;
-        }
-      );
-    }
-    this.ascOrder = !this.ascOrder;
   }
 }

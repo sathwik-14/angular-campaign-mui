@@ -1,18 +1,31 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Validators, FormBuilder, FormArray } from '@angular/forms';
 import { SharedDataService } from 'src/app/services/data.service';
-
-
+import { CampaignInterface } from '../types/campaign.interface';
+import {StepperOrientation, MatStepperModule} from '@angular/material/stepper';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { BreakpointObserver } from '@angular/cdk/layout';
 @Component({
   selector: 'app-campaign-form',
   templateUrl: './campaign-form.component.html',
   styleUrls: ['./campaign-form.component.scss'],
 })
 export class CampaignFormComponent {
+
+  stepperOrientation: Observable<StepperOrientation>;
+
   constructor(
     private dataservice: SharedDataService,
-    private fb: FormBuilder
-  ) {}
+    private fb: FormBuilder,
+    breakpointObserver: BreakpointObserver
+  ) {
+    this.stepperOrientation = breakpointObserver
+      .observe('(min-width: 800px)')
+      .pipe(map(({matches}) => (matches ? 'horizontal' : 'vertical')));
+  }
+
+
 
   campaignForm = this.fb.group({
     name: ['', Validators.required],
@@ -23,17 +36,6 @@ export class CampaignFormComponent {
     locations: this.fb.array([]),
   });
 
-  firstFormGroup = this.fb.group({
-    name: ['', Validators.required],
-    objective: ['', Validators.required],
-    categorySelect: ['select'],
-    offerSelect: ['select'],
-    comments: [''],
-  });
-
-  secondFormGroup = this.fb.group({
-    locations: this.fb.array([]),
-  });
 
   get locations() {
     return this.campaignForm.get('locations') as FormArray;
@@ -51,7 +53,8 @@ export class CampaignFormComponent {
   @Input() campaignName: any;
   @Output() toggleForm = new EventEmitter<boolean>();
   @Output() campaignNameChange = new EventEmitter<string>();
-  newCampaign: {} = {};
+  @Output() addCampaign = new EventEmitter<CampaignInterface>();
+  newCampaign: any
   category: boolean = false;
   categories = ['first', 'second', 'third'];
   edit: boolean = false;
@@ -62,19 +65,6 @@ export class CampaignFormComponent {
   browse: boolean = false;
   application: boolean = false;
 
-  currentPageIndex = 0;
-
-  nextPage() {
-    if (this.currentPageIndex < 3) {
-      this.currentPageIndex++;
-    }
-  }
-
-  prevPage() {
-    if (this.currentPageIndex > 0) {
-      this.currentPageIndex--;
-    }
-  }
 
   toggleBrowse() {
     this.browse = !this.browse;
@@ -125,23 +115,24 @@ export class CampaignFormComponent {
 
   submitted: boolean = false;
 
+  toggle () {
+    this.toggleForm.emit(false);  
+  }
+
   submitForm() {
     this.submitted = true;
     if (this.campaignForm.valid) {
-      setTimeout(() => {
         this.newCampaign = {
           name: this.campaignForm.value.name,
           objective: this.campaignForm.value.objective,
           comment: this.campaignForm.value.comments,
           category: this.campaignForm.value.categorySelect,
           offer: this.campaignForm.value.offerSelect,
-          location: this.locations,
+          location: this.campaignForm.get('locations')?.value,
         };
-        this.dataservice.addData(this.newCampaign);
-        this.submitted = false;
+        this.addCampaign.emit(this.newCampaign);
         this.showForm = false;
-        this.toggleForm.emit(this.showForm);
-      }, 1000);
+        this.toggleForm.emit(this.showForm);  
     } else {
       this.submitted = false;
     }
