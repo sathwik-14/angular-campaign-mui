@@ -1,0 +1,44 @@
+$breakpoint-phone: 481px;
+$breakpoint-tablet: 769px;
+
+section {
+  .hover {
+    &:hover {
+      cursor: pointer;
+      color: #478efc !important;
+    }
+  }
+
+  .table-container {
+    overflow: auto;
+    max-height: 60vh;
+    a {
+      color: inherit; /* Remove default link color */
+      text-decoration: none; /* Remove underline */
+      transition: all 0.3s ease-in-out;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    th {
+      font-weight: 900;
+    }
+
+    td {
+      span {
+        display: inline-block;
+        width: 100%;
+      }
+    }
+  }
+  
+  @media (max-width: #{$breakpoint-phone}) {
+    th {
+      font-size: 0.8rem;
+    }
+    td {
+      font-size: 0.7rem;
+    }
+  }
+}

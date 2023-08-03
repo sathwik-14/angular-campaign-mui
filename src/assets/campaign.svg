@@ -1,17 +1,4 @@
-<!-- campaign details table  -->
-<section class="container">
-
-<mat-card
-  class="container pt-3 my-2 my-lg-4"
-  [ngClass]="!showAlert ? 'fade-in' : ''"
-  *ngIf="!showAlert"
->
-
-<!-- campaign details main content -->
-
-<mat-card-content>
-  <div class="text-center mb-2 ">    
-    <svg
+<svg
        xmlns:dc="http://purl.org/dc/elements/1.1/"
        xmlns:cc="http://creativecommons.org/ns#"
        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -68,63 +55,3 @@
            sodipodi:nodetypes="sssssssssssscsss" />
       </g>
     </svg>
-    <p >
-      <span class="info-header h2">{{ foundObject["name"] ? foundObject["name"] : "NA" }}</span>
-      <span class="text-muted ms-2">@{{ foundObject["id"] ? foundObject["id"] : "NA" }}
-    </span></p>
-    <p class="text-muted ">
-      {{ foundObject["status"] ? foundObject["status"] : "NA" }}
-    </p>
-  </div>
-  <div>
-    
-    
-    
-    <p class="fs-7 d-flex table-item justify-content-between">
-      <span class="h6">Objective:&nbsp;</span>
-      {{ foundObject["objective"] ? foundObject["objective"] : "NA" }}
-    </p>
-    <p class="fs-7 d-flex table-item justify-content-between">
-      <span class="h6">Category Type:&nbsp;</span>
-      {{ foundObject["category"] ? foundObject["category"] : "NA" }}
-    </p>
-    <p class="fs-7 d-flex table-item justify-content-between">
-      <span class="h6">Offer Type:&nbsp;</span>
-      {{ foundObject["offer"] ? foundObject["offer"] : "NA" }}
-    </p>
-    <p class="fs-7 d-flex table-item justify-content-between">
-      <span class="h6">Locations:&nbsp;</span>
-      <span *ngIf="!foundObject['location']">NA</span>
-      <ng-container *ngIf="foundObject['location']">
-        {{ foundObject["location"] }}
-      </ng-container>
-    </p>
-    <p class="fs-7 d-flex table-item justify-content-between">
-      <span class="h6">CTR:&nbsp;</span>
-      {{foundObject.ctr}}
-    </p>
-    <p class="fs-7 d-flex table-item justify-content-between">
-      <span class="h6">Start Date:&nbsp;</span>
-      {{
-        foundObject["start date"]
-          ? (foundObject["start date"] | date : "yyyy-MM-dd")
-          : "NA"
-      }}
-    </p>
-  </div>
-</mat-card-content>
-
-  <div class="text-center mb-3">
-    <button mat-raised-button color="warn" (click)="openDialog()">
-      Delete Campaign<mat-icon fontIcon="delete"></mat-icon>
-    </button>
-  </div>
-  <div class="text-center mb-3">
-    <button mat-button (click)="goBack()">
-      Back
-      <mat-icon fontIcon="west"></mat-icon>
-      
-    </button>
-  </div>
-</mat-card>
-</section>

@@ -1,0 +1,23 @@
+<section class="container my-2 my-lg-4">
+
+    <header class="header d-flex justify-content-between">
+      <h2 class="header-title text-theme-primary">Manage Campaigns</h2>
+    </header>
+  
+    <section class="list-campaign">
+      <div class="fs-7 text-muted" *ngIf="!showForm">Manage Campaign</div>
+      <div *ngIf="showForm">
+        <span class="fs-7 text-muted hover" (click)="toggleForm()">Manage Campaign</span>&nbsp;>&nbsp;
+        <span class="fs-7 text-muted">{{ newCampaignName }}</span>
+      </div>
+      <mat-card class="p-2 p-lg-4 mt-2 mt-lg-4" [ngClass]="showForm ? '' : 'fadeIn'">
+        <mat-card-content>
+          <app-campaign-form  (addCampaign)="addCampaign($event)" [(campaignName)]="newCampaignName" [showForm]="showForm" (toggleForm)="toggleForm()" *ngIf="showForm"></app-campaign-form>   
+          <app-campaign-list [campaigns]="campaigns" (toggleForm)="toggleForm()" *ngIf="!showForm"></app-campaign-list>
+        </mat-card-content>
+      </mat-card>
+    </section>
+  </section>
+  
+  
+  

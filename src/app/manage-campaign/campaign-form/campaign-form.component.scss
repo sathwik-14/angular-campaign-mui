@@ -5,6 +5,10 @@ $breakpoint-tablet: 769px;
   color: #478efc;
 }
 
+button:disabled {
+  background-color: rgba(grey,.4) !important;
+}
+
 .input-full-width {
   width: 100%;
 }

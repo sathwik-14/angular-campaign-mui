@@ -1,30 +1,28 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CampaignInterface } from '../types/campaign.interface';
-import { SharedDataService } from '../../services/data.service';
+import { CampaignInterface } from './types/campaign.interface';
+import { SharedDataService } from '../services/data.service';
 import { MatTableDataSource } from '@angular/material/table';
 import {MatSort, Sort, MatSortModule} from '@angular/material/sort';
 
 @Component({
   selector: 'app-campaign',
-  templateUrl: './campaign.component.html',
-  styleUrls: ['./campaign.component.scss'],
+  templateUrl: './manage-campaign.component.html',
+  styleUrls: ['./manage-campaign.component.scss'],
 })
-export class CampaignComponent implements OnInit{
-  dataSource = new MatTableDataSource<CampaignInterface>;
+export class ManageCampaignComponent implements OnInit{
 
   constructor(private dataService: SharedDataService,) { }
 
   ngOnInit(){
     this.getCampaignData()
   }
-  displayedColumns = ['id', 'name', 'status', 'ctr', 'start date']
-  @ViewChild(MatSort) sort!: MatSort;
+
+  campaigns: CampaignInterface[] = []
 
 
   getCampaignData(): void {
     this.dataService.getCampaigns().subscribe((data) => {
-      this.dataSource.data = data;
-      this.dataSource.sort = this.sort;
+     this.campaigns = data
     });
   }
 
@@ -44,6 +42,8 @@ export class CampaignComponent implements OnInit{
 
   toggleForm() {
     this.showForm = !this.showForm;
+    this.newCampaignName  = 'New Campaign';
+
     this.getCampaignData()
   }
 

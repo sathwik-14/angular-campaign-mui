@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CampaignFormComponent } from './campaign-form/campaign-form.component';
 import { CampaignInfoComponent } from './campaign-info/campaign-info.component';
-import { CampaignComponent } from './campaign-list/campaign.component';
+import { CampaignComponent } from './campaign-list/campaign-list.component';
 import { SharedDataService } from '../services/data.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -19,11 +19,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ManageCampaignRouting } from './manage-campaign-routing.module'
 import { MatBadgeModule } from '@angular/material/badge';
+import { ManageCampaignComponent } from './manage-campaign.component';
 @NgModule({
   declarations: [
     CampaignFormComponent,
     CampaignInfoComponent,
-    CampaignComponent
+    CampaignComponent,
+    ManageCampaignComponent
   ],
   imports: [
     MatBadgeModule,
