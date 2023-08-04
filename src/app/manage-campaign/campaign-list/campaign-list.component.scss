@@ -20,19 +20,8 @@ section {
         cursor: pointer;
       }
     }
-
-    th {
-      font-weight: 900;
-    }
-
-    td {
-      span {
-        display: inline-block;
-        width: 100%;
-      }
-    }
   }
-  
+
   @media (max-width: #{$breakpoint-phone}) {
     th {
       font-size: 0.8rem;

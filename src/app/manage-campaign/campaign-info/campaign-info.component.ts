@@ -13,6 +13,7 @@ import {
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 
 export interface DialogData {
   name: string;
@@ -20,6 +21,8 @@ export interface DialogData {
 }
 
 @Component({
+  standalone:true,
+  imports:[MatCardModule,CommonModule,MatIconModule,MatButtonModule],
   selector: 'app-campaign-info',
   templateUrl: './campaign-info.component.html',
   styleUrls: ['./campaign-info.component.scss'],

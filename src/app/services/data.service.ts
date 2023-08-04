@@ -42,7 +42,11 @@ export class SharedDataService {
   }
 
   private campaignUrl = "api/campaigns"; // URL to web api
-  /** GET heroes from the server */
+
+  /**
+   * Description
+   * @returns {Observable}
+   */
   getCampaigns(): Observable<CampaignInterface[]> {
     return this.http.get<CampaignInterface[]>(this.campaignUrl).pipe(
       tap((_) => this.log("fetched heroes")),

@@ -17,8 +17,10 @@ import { MatSort } from "@angular/material/sort";
   templateUrl: "./campaign-list.component.html",
   styleUrls: ["./campaign-list.component.scss"],
 })
-export class CampaignComponent implements OnChanges {
+export class CampaignListComponent implements OnChanges {
   dataSource = new MatTableDataSource<CampaignInterface>();
+  displayedColumns = ["id", "name", "status", "ctr", "start date"];
+  @ViewChild(MatSort, { static: true }) sort!: MatSort;
   @Input() campaigns!: CampaignInterface[];
   @Output() toggleForm = new EventEmitter<any>();
   isLoading?: boolean;
@@ -31,9 +33,11 @@ export class CampaignComponent implements OnChanges {
       this.dataSource.sort = this.sort;
     }
   }
-  displayedColumns = ["id", "name", "status", "ctr", "start date"];
-  @ViewChild(MatSort, { static: true }) sort!: MatSort;
 
+  /**
+   * Description
+   * @returns {any} 
+   */
   toggle() {
     this.toggleForm.emit();
   }
