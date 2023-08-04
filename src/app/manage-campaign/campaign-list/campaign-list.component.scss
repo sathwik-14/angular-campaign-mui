@@ -16,9 +16,24 @@ section {
       color: inherit; /* Remove default link color */
       text-decoration: none; /* Remove underline */
       transition: all 0.3s ease-in-out;
-      &:hover {
+      span:hover {
         cursor: pointer;
       }
+    }
+    .Completed {
+      padding: .6rem;
+      border-radius: 1rem;
+      background-color: #bdeacd;
+    }
+    .Scheduled {
+      padding: .6rem;
+      border-radius: 1rem;
+      background-color: #b7cdfd;
+    }
+    .Draft {
+      padding: .6rem;
+      border-radius: 1rem;
+      background-color: #d4d2d4;
     }
   }
 

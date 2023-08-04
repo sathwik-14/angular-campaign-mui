@@ -4,19 +4,31 @@
   align-items: flex-start;
 }
 
+section {
+  .Completed {
+    padding: .6rem;
+    border-radius: 1rem;
+    background-color: #bdeacd;
+  }
+  .Scheduled {
+    padding: .6rem;
+    border-radius: 1rem;
+    background-color: #b7cdfd;
+  }
+  .Draft {
+    padding: .6rem;
+    border-radius: 1rem;
+    background-color: #d4d2d4;
+  }
+}
+
 .demo-section + .demo-section {
   margin-top: 16px;
 }
 
-
 .info-header {
   color: #478efc;
 }
-
-.table-item {
-  border-bottom: 1px solid rgba(black, 0.1) !important;
-}
-
 
 .fade-in {
   animation: fadeIn 0.2s ease-in-out;

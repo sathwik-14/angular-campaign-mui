@@ -79,46 +79,66 @@
           </span>
         </p>
         <p class="text-muted">
-          {{ foundObject["status"] ? foundObject["status"] : "NA" }}
+          <span [class]="foundObject.status"
+            >{{ foundObject["status"] ? foundObject["status"] : "NA" }}
+          </span>
         </p>
+        <div
+          class="d-flex justify-content-between gap-2 my-4 align-items-center"
+        >
+          <div class="d-flex align-items-center gap-2">
+            <mat-icon fontIcon="calendar_month"></mat-icon>
+            <span
+              >{{
+                foundObject["start date"] ? foundObject["start date"] : "NA"
+              }}
+            </span>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <mat-icon fontIcon="mouse"></mat-icon>
+            {{ foundObject.ctr }}%
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <mat-icon fontIcon="pin_drop"></mat-icon>
+            <span *ngIf="!foundObject['location']">NA</span>
+            <ng-container *ngIf="foundObject['location']">
+              {{
+                foundObject["location"].length ? foundObject["location"] : "NA"
+              }}
+            </ng-container>
+          </div>
+        </div>
       </div>
       <div>
-        <p class="fs-7 d-flex table-item justify-content-between">
+        <p class="fs-7 d-flex flex-column table-item justify-content-between">
           <span class="h6">Objective:&nbsp;</span>
-          {{ foundObject["objective"] ? foundObject["objective"] : "NA" }}
+          <span class="ms-auto mb-1">
+            {{ foundObject["objective"] ? foundObject["objective"] : "NA" }}
+          </span>
         </p>
-        <p class="fs-7 d-flex table-item justify-content-between">
+        <p class="fs-7 d-flex flex-column table-item justify-content-between">
+          <span class="h6">Comments:&nbsp;</span>
+          <span class="ms-auto mb-1">
+            {{ foundObject["comment"] ? foundObject["comment"] : "NA" }}
+          </span>
+        </p>
+        <p class="fs-7 d-flex flex-column table-item justify-content-between">
           <span class="h6">Category Type:&nbsp;</span>
-          {{ foundObject["category"] ? foundObject["category"] : "NA" }}
+          <span class="ms-auto mb-1">
+            {{ foundObject["category"] ? foundObject["category"] : "NA" }}
+          </span>
         </p>
-        <p class="fs-7 d-flex table-item justify-content-between">
+        <p class="fs-7 d-flex flex-column table-item justify-content-between">
           <span class="h6">Offer Type:&nbsp;</span>
-          {{ foundObject["offer"] ? foundObject["offer"] : "NA" }}
-        </p>
-        <p class="fs-7 d-flex table-item justify-content-between">
-          <span class="h6">Locations:&nbsp;</span>
-          <span *ngIf="!foundObject['location']">NA</span>
-          <ng-container *ngIf="foundObject['location']">
-            {{ foundObject["location"].length ? foundObject["location"] : "NA" }}
-          </ng-container>
-        </p>
-        <p class="fs-7 d-flex table-item justify-content-between">
-          <span class="h6">CTR:&nbsp;</span>
-          {{ foundObject.ctr }}
-        </p>
-        <p class="fs-7 d-flex table-item justify-content-between">
-          <span class="h6">Start Date:&nbsp;</span>
-          {{
-            foundObject["start date"]
-              ? (foundObject["start date"] | date : "yyyy-MM-dd")
-              : "NA"
-          }}
+          <span class="ms-auto mb-1">
+            {{ foundObject["offer"] ? foundObject["offer"] : "NA" }}
+          </span>
         </p>
       </div>
 
       <!-- Delete and back buttons  -->
 
-      <div class="text-center mb-3">
+      <div class="text-center my-3">
         <button mat-raised-button color="warn" (click)="openDialog()">
           Delete Campaign<mat-icon fontIcon="delete"></mat-icon>
         </button>
