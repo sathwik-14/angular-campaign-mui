@@ -17,7 +17,12 @@
 }
 
 .active-link {
-  background-color: #f0f0f0 !important;
+  background-color: #dbdada !important;
+}
+
+mat-sidenav-content {
+  background-color: #f0f0f0;
+  height: 100vh;
 }
 
 
