@@ -1,9 +1,6 @@
 $breakpoint-phone: 481px;
 $breakpoint-tablet: 769px;
 
-.text-theme-primary {
-  color: #478efc;
-}
 
 button:disabled {
   background-color: rgba(grey,.4) !important;
@@ -55,15 +52,6 @@ button:disabled {
   }
 }
 
-
-
-.stepper {
-  .filler {
-    height: 0.2vh;
-    background-color: rgb(182, 182, 182);
-    width: 8%;
-  }
-}
 
 form {
   

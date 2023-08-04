@@ -1,6 +1,7 @@
 <!-- material stepper with forms  -->
 
 <mat-stepper [linear]="true" [orientation]="(stepperOrientation | async)!" #stepper>
+  <!-- Form first page -->
   <mat-step [stepControl]="campaignForm" label="Campaign Detail">
     <form [formGroup]="campaignForm" class="mt-2">
       <mat-form-field appearance="outline" class="mb-3 input-full-width">
@@ -57,7 +58,7 @@
       </div>
     </form>
   </mat-step>
-
+<!-- Form second page  -->
   <mat-step label="Location Detail">
     <form [formGroup]="campaignForm" class="mt-2">
       <div class="d-flex flex-column flex-lg-row">
@@ -152,7 +153,7 @@
       </div>
     </form>
   </mat-step>
-
+<!-- Form third page  -->
   <mat-step>
     <ng-template matStepLabel>Audience</ng-template>
     <div class="d-flex flex-column mt-2">
@@ -300,7 +301,7 @@
       ">Next</button>
     </div>
   </mat-step>
-
+<!-- Form fourth page  -->
   <mat-step>
     <ng-template matStepLabel>Campaign Summary</ng-template>
     <div class="d-flex flex-column gap-3 mb-3">
