@@ -90,7 +90,7 @@
             <mat-icon fontIcon="calendar_month"></mat-icon>
             <span
               >{{
-                foundObject["start date"] ? foundObject["start date"] : "NA"
+                foundObject["start date"] ? (foundObject["start date"] | date:'dd-MM-yyyy') : "NA"
               }}
             </span>
           </div>

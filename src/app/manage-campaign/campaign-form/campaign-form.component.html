@@ -1,12 +1,22 @@
 <!-- material stepper with forms  -->
 
-<mat-stepper [linear]="true" [orientation]="(stepperOrientation | async)!" #stepper>
+<mat-stepper
+  [linear]="true"
+  [orientation]="(stepperOrientation | async)!"
+  #stepper
+>
   <!-- Form first page -->
   <mat-step [stepControl]="campaignForm" label="Campaign Detail">
     <form [formGroup]="campaignForm" class="mt-2">
       <mat-form-field appearance="outline" class="mb-3 input-full-width">
         <mat-label>Campaign Name </mat-label>
-        <input (change)="updateCampaignName()" matInput type="text" formControlName="name" placeholder="Name" />
+        <input
+          (change)="updateCampaignName()"
+          matInput
+          type="text"
+          formControlName="name"
+          placeholder="Name"
+        />
         <mat-error> Enter Campaign Name </mat-error>
       </mat-form-field>
 
@@ -53,107 +63,122 @@
       </mat-form-field>
       <div>
         <button mat-button (click)="toggle()">Cancel</button>
-        <button mat-button style="background-color: #478efc;color: #fefefe;
-        " matStepperNext cdkFocusInitial [disabled]="campaignForm.invalid">Next</button>
+        <button
+          mat-button
+          style="background-color: #478efc; color: #fefefe"
+          matStepperNext
+          cdkFocusInitial
+          [disabled]="campaignForm.invalid"
+        >
+          Next
+        </button>
       </div>
     </form>
   </mat-step>
-<!-- Form second page  -->
+  <!-- Form second page  -->
   <mat-step label="Location Detail">
-    <form [formGroup]="campaignForm" class="mt-2">
-      <div class="d-flex flex-column flex-lg-row">
-        <div class="d-flex flex-column gap-2" formArrayName="locations">
-          <mat-form-field appearance="outline">
-            <mat-label>Location Detail (Optional)</mat-label>
-            <input
-              matInput
-              type="text"
-              name="location"
-              placeholder="Add Location"
-              (change)="addLocation(place)"
-              #place
-            />
-          </mat-form-field>
+    <div class="form d-flex flex-column flex-lg-row mt-2">
+      <div class="d-flex flex-column gap-2">
+        <mat-form-field appearance="outline">
+          <mat-label>Location Detail (Optional)</mat-label>
+          <input
+            matInput
+            type="text"
+            name="location"
+            placeholder="Add Location"
+            (change)="addLocation(place)"
+            #place
+          />
+        </mat-form-field>
 
-          <div class="mb-3 d-flex">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7778.612017809424!2d74.83442707439495!3d12.888034113642867!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba35ba59c0c7c3d%3A0x857ed9a4e15efd09!2sAjantha%20business%20centre!5e0!3m2!1sen!2sin!4v1689769326528!5m2!1sen!2sin"
-              width="280"
-              style="border: 0"
-              allowfullscreen=""
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-            ></iframe>
-          </div>
+        <div class="mb-3 d-flex">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7778.612017809424!2d74.83442707439495!3d12.888034113642867!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba35ba59c0c7c3d%3A0x857ed9a4e15efd09!2sAjantha%20business%20centre!5e0!3m2!1sen!2sin!4v1689769326528!5m2!1sen!2sin"
+            width="280"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
         </div>
+      </div>
 
-        <div class="col px-1 px-lg-5 mt-4">
-          <div class="d-flex flex-column gap-2 justify-content-between">
-            <mat-label>Locations</mat-label>
-            <div class="places" *ngIf="locations.length > 0">
-              <div
-                class="d-flex mb-2 fs-6 w-100 align-items-center gap-2"
-                *ngFor="let place of locations.controls; let i = index"
-              >
-                <div>{{ i + 1 }}</div>
-                <div class="d-flex flex-grow-1 align-items-center">
-                  <input
-                    #place
-                    matInput
-                    class="list-name"
-                    [ngClass]="{ 'edit-mode': isEditable(i) }"
-                    (blur)="toggleEditable(null)"
-                    [value]="place.value"
-                    [readonly]="isEditable(i)"
-                  />
-                  <button
-                    mat-icon-button
-                    *ngIf="!isEditable(i)"
-                    (click)="toggleEditable(i)"
-                  >
-                    <mat-icon color="primary">edit</mat-icon>
-                  </button>
-                  <button
-                    mat-icon-button
-                    *ngIf="isEditable(i)"
-                    (click)="toggleEditable(i)"
-                  >
-                    <mat-icon class="primary">check</mat-icon>
-                  </button>
-                  <button mat-icon-button (click)="deleteLocation(i)">
-                    <mat-icon color="warn" fontIcon="delete"></mat-icon>
-                  </button>
-                </div>
+      <div class="col px-1 px-lg-5 mt-4">
+        <div class="d-flex flex-column gap-2 justify-content-between">
+          <mat-label>Locations</mat-label>
+          <div class="places" *ngIf="locations.length > 0">
+            <div
+              class="d-flex mb-2 fs-6 w-100 align-items-center gap-2"
+              *ngFor="let place of locations.controls; let i = index"
+            >
+              <div>{{ i + 1 }}</div>
+              <div class="d-flex flex-grow-1 align-items-center">
+                <input
+                  #place
+                  matInput
+                  class="list-name"
+                  [ngClass]="{ 'edit-mode': isEditable(i) }"
+                  (blur)="toggleEditable(null)"
+                  [value]="place.value"
+                  [readonly]="!isEditable(i)"
+                />
+                <button
+                  mat-icon-button
+                  *ngIf="!isEditable(i)"
+                  (click)="toggleEditable(i)"
+                >
+                  <mat-icon color="primary" fontIcon="edit"></mat-icon>
+                </button>
+
+                <button
+                  *ngIf="isEditable(i)"
+                  mat-icon-button
+                  (click)="toggleEditable(i)"
+                >
+                  <mat-icon class="primary">check</mat-icon>
+                </button>
+                <button mat-icon-button (click)="deleteLocation(i)">
+                  <mat-icon color="warn" fontIcon="delete"></mat-icon>
+                </button>
               </div>
             </div>
-            <div class="text-center text-muted bg-light p-1 h2" *ngIf="locations.length == 0">
-              <mat-icon style="font-size: 4rem;width: unset;height: unset;" fontIcon="not_listed_location"></mat-icon>
-              <p>
-                No location added!
-              </p>
-            </div>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Radius</mat-label>
-              <mat-select>
-                <mat-option value="select" selected>select</mat-option>
-                <mat-option *ngFor="let option of categories" [value]="option">
-                  {{ option }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
           </div>
+          <div
+            class="text-center text-muted bg-light p-1 h2"
+            *ngIf="locations.length == 0"
+          >
+            <mat-icon
+              style="font-size: 4rem; width: unset; height: unset"
+              fontIcon="not_listed_location"
+            ></mat-icon>
+            <p>No location added!</p>
+          </div>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Radius</mat-label>
+            <mat-select>
+              <mat-option value="select" selected>select</mat-option>
+              <mat-option *ngFor="let option of categories" [value]="option">
+                {{ option }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
+    </div>
 
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext style="background-color: #478efc;color: #fefefe;
-        ">Next</button>
-      </div>
-    </form>
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button
+        mat-button
+        matStepperNext
+        style="background-color: #478efc; color: #fefefe"
+      >
+        Next
+      </button>
+    </div>
   </mat-step>
-<!-- Form third page  -->
+  <!-- Form third page  -->
   <mat-step>
     <ng-template matStepLabel>Audience</ng-template>
     <div class="d-flex flex-column mt-2">
@@ -254,37 +279,27 @@
           </div>
           <div class="form-check my-1 d-flex gap-2">
             <mat-checkbox id="flexCheckDefault" />
-            <label for="flexCheckDefault">
-              20 - 29
-            </label>
+            <label for="flexCheckDefault"> 20 - 29 </label>
             <div class="text-muted ms-auto me-2">7.5M</div>
           </div>
           <div class="form-check my-1 d-flex gap-2">
             <mat-checkbox value="" id="flexCheckDefault" />
-            <label for="flexCheckDefault">
-              30 - 39
-            </label>
+            <label for="flexCheckDefault"> 30 - 39 </label>
             <div class="text-muted ms-auto me-2">7.2M</div>
           </div>
           <div class="form-check my-1 d-flex gap-2">
             <mat-checkbox value="" id="flexCheckDefault" />
-            <label for="flexCheckDefault">
-              40 - 49
-            </label>
+            <label for="flexCheckDefault"> 40 - 49 </label>
             <div class="text-muted ms-auto me-2">12.8M</div>
           </div>
           <div class="form-check my-1 d-flex gap-2">
             <mat-checkbox value="" id="flexCheckDefault" />
-            <label for="flexCheckDefault">
-              50 - 59
-            </label>
+            <label for="flexCheckDefault"> 50 - 59 </label>
             <div class="text-muted ms-auto me-2">2.8M</div>
           </div>
           <div class="form-check my-1 d-flex gap-2">
             <mat-checkbox value="" id="flexCheckDefault" />
-            <label for="flexCheckDefault">
-              &ge; 60
-            </label>
+            <label for="flexCheckDefault"> &ge; 60 </label>
             <div class="text-muted ms-auto me-2">2.6M</div>
           </div>
         </div>
@@ -297,54 +312,66 @@
 
     <div>
       <button mat-button matStepperPrevious>Back</button>
-      <button mat-button matStepperNext style="background-color: #478efc;color: #fefefe;
-      ">Next</button>
+      <button
+        mat-button
+        matStepperNext
+        style="background-color: #478efc; color: #fefefe"
+      >
+        Next
+      </button>
     </div>
   </mat-step>
-<!-- Form fourth page  -->
+  <!-- Form fourth page  -->
   <mat-step>
     <ng-template matStepLabel>Campaign Summary</ng-template>
     <div class="d-flex flex-column gap-3 mb-3">
-    <div class="fs-7 text-muted">
-      Name : <span class="text-dark">{{ campaignForm.value.name }}</span>
+      <div class="fs-7 text-muted">
+        Name : <span class="text-dark">{{ campaignForm.value.name }}</span>
+      </div>
+      <div class="fs-7 text-muted">
+        Objective :
+        <span class="text-dark">{{ campaignForm.value.objective }}</span>
+      </div>
+      <div class="fs-7 text-muted">
+        Category :
+        <span class="text-dark badge bg-info">{{
+          campaignForm.value.categorySelect
+        }}</span>
+      </div>
+      <div class="fs-7 text-muted">
+        Offer Type :
+        <span class="text-dark badge bg-info">{{
+          campaignForm.value.offerSelect
+        }}</span>
+      </div>
+      <div class="fs-7 text-muted">
+        Comments :
+        <span class="text-dark">{{ campaignForm.value.comments }}</span>
+      </div>
+      <div class="fs-7 text-muted">
+        Locations :
+        <span
+          Class="text-dark mx-1"
+          *ngFor="let location of locations.controls; let i = index"
+          >{{ location.value }}
+          <ng-container *ngIf="i < locations.controls.length - 1"
+            >,</ng-container
+          >
+        </span>
+      </div>
+      <div class="text-danger">
+        NOTE : Make sure all details are entered properly before submitting.
+      </div>
     </div>
-    <div class="fs-7 text-muted">
-      Objective :
-      <span class="text-dark">{{ campaignForm.value.objective }}</span>
-    </div>
-    <div class="fs-7 text-muted">
-      Category :
-      <span class="text-dark badge bg-info">{{
-        campaignForm.value.categorySelect
-      }}</span>
-    </div>
-    <div class="fs-7 text-muted">
-      Offer Type :
-      <span class="text-dark badge bg-info">{{
-        campaignForm.value.offerSelect
-      }}</span>
-    </div>
-    <div class="fs-7 text-muted">
-      Comments :
-      <span class="text-dark">{{ campaignForm.value.comments }}</span>
-    </div>
-    <div class="fs-7 text-muted">
-      Locations :
-      <span
-        Class="text-dark mx-1"
-        *ngFor="let location of locations.controls; let i = index"
-        >{{ location.value }}
-        <ng-container *ngIf="i < locations.controls.length - 1">,</ng-container>
-      </span>
-    </div>
-    <div class="text-danger">
-      NOTE : Make sure all details are entered properly before submitting.
-    </div>
-  </div>
     <div>
       <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="submitForm()" style="background-color: #478efc;color: #fefefe;
-      ">Submit</button>
+      <button
+        mat-button
+        (click)="submitForm()"
+        style="background-color: #478efc; color: #fefefe"
+      >
+        Submit
+      </button>
     </div>
   </mat-step>
 </mat-stepper>
