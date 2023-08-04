@@ -82,9 +82,9 @@ export class CampaignInfoComponent implements OnInit {
   providers: [SharedDataService],
   selector: "dialog-overview-example-dialog",
   template: `
-    <div mat-dialog-title style="color: red;vertical-align:middle;">
+    <div mat-dialog-title class="d-flex align-items-center gap-2" style="color: red;vertical-align:middle;">
       <mat-icon fontIcon="error"></mat-icon>
-      Confirm Delete
+      <div>Confirm Delete</div>
     </div>
     <p mat-dialog-content>
       Are you sure you want to delete {{ data.name }} campaign ?
