@@ -12,6 +12,7 @@ import { MatCardModule } from "@angular/material/card";
 import { MatStepperModule } from "@angular/material/stepper";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSelectModule } from "@angular/material/select";
+import { MatSnackBarModule} from '@angular/material/snack-bar';
 import { MatInputModule } from "@angular/material/input";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatIconModule } from "@angular/material/icon";
@@ -26,6 +27,7 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
     ManageCampaignComponent,
   ],
   imports: [
+    MatSnackBarModule,
     MatProgressSpinnerModule,
     MatDialogModule,
     MatIconModule,
