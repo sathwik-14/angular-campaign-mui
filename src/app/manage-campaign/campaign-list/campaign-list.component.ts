@@ -33,7 +33,7 @@ export class CampaignListComponent implements OnInit, OnChanges {
   }
 
   /**
-   * sets data to table dataSource as soon as data is
+   * set updated data to table dataSource 
    * @param {any} changes:SimpleChanges
    */
   ngOnChanges(changes: SimpleChanges): void {
