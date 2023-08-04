@@ -77,7 +77,7 @@
   </mat-step>
   <!-- Form second page  -->
   <mat-step label="Location Detail">
-    <div class="form d-flex flex-column flex-lg-row mt-2">
+    <div class="form d-flex flex-column flex-lg-row mt-2 mb-3">
       <div class="d-flex flex-column gap-2">
         <mat-form-field appearance="outline">
           <mat-label>Location Detail (Optional)</mat-label>
@@ -181,7 +181,7 @@
   <!-- Form third page  -->
   <mat-step>
     <ng-template matStepLabel>Audience</ng-template>
-    <div class="d-flex flex-column mt-2">
+    <div class="d-flex flex-column mt-2 mb-3">
       <mat-form-field appearance="outline">
         <mat-label>Audience</mat-label>
         <input
@@ -194,7 +194,7 @@
           <mat-icon>search</mat-icon>
         </button>
       </mat-form-field>
-
+      <!-- Browse category container  -->
       <div
         class="browse-container d-flex flex-column mb-3 flex-lg-row"
         *ngIf="browse"
