@@ -32,7 +32,10 @@ export class ManageCampaignComponent implements OnInit{
    * add a new campaign and get the updated data from dataService
    * @param {CampaignInterface} newCampaign
    */
-  addCampaign(newCampaign: CampaignInterface) {   
+  addCampaign(newCampaign: CampaignInterface) { 
+    newCampaign.status = 'Draft';
+    newCampaign.ctr = 0;
+    newCampaign['start date'] = new Date().toISOString();
     this.dataService.addCampaign(newCampaign as CampaignInterface)
     .subscribe((campaign :any) => {
       this.getCampaignData()

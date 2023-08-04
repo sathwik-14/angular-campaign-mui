@@ -99,7 +99,7 @@
           <span class="h6">Locations:&nbsp;</span>
           <span *ngIf="!foundObject['location']">NA</span>
           <ng-container *ngIf="foundObject['location']">
-            {{ foundObject["location"] }}
+            {{ foundObject["location"].length ? foundObject["location"] : "NA" }}
           </ng-container>
         </p>
         <p class="fs-7 d-flex table-item justify-content-between">
