@@ -1,32 +1,32 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { CampaignFormComponent } from './campaign-form/campaign-form.component';
-import { CampaignListComponent } from './campaign-list/campaign-list.component';
-import { SharedDataService } from '../services/data.service';
-import { ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTableModule } from '@angular/material/table';
-import { MatSortModule} from '@angular/material/sort';
-import { MatCardModule } from '@angular/material/card'
-import { MatStepperModule } from '@angular/material/stepper'; 
-import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatSelectModule} from '@angular/material/select';
-import { MatInputModule} from '@angular/material/input';
-import {MatCheckboxModule} from '@angular/material/checkbox'
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog';
-import { ManageCampaignRouting } from './manage-campaign-routing.module'
-import { MatBadgeModule } from '@angular/material/badge';
-import { ManageCampaignComponent } from './manage-campaign.component';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { CampaignFormComponent } from "./campaign-form/campaign-form.component";
+import { CampaignListComponent } from "./campaign-list/campaign-list.component";
+import { SharedDataService } from "../services/data.service";
+import { ReactiveFormsModule } from "@angular/forms";
+import { RouterModule } from "@angular/router";
+import { MatButtonModule } from "@angular/material/button";
+import { MatTableModule } from "@angular/material/table";
+import { MatSortModule } from "@angular/material/sort";
+import { MatCardModule } from "@angular/material/card";
+import { MatStepperModule } from "@angular/material/stepper";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatSelectModule } from "@angular/material/select";
+import { MatInputModule } from "@angular/material/input";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatIconModule } from "@angular/material/icon";
+import { MatDialogModule } from "@angular/material/dialog";
+import { ManageCampaignRouting } from "./manage-campaign-routing.module";
+import { ManageCampaignComponent } from "./manage-campaign.component";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 @NgModule({
   declarations: [
     CampaignFormComponent,
     CampaignListComponent,
-    ManageCampaignComponent
+    ManageCampaignComponent,
   ],
   imports: [
-    MatBadgeModule,
+    MatProgressSpinnerModule,
     MatDialogModule,
     MatIconModule,
     MatCheckboxModule,
@@ -43,5 +43,6 @@ import { ManageCampaignComponent } from './manage-campaign.component';
     RouterModule,
     ManageCampaignRouting,
   ],
-  providers: [ SharedDataService]})
-export class CampaignModule { }
+  providers: [SharedDataService],
+})
+export class CampaignModule {}

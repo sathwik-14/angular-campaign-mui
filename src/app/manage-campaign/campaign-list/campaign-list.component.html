@@ -7,7 +7,9 @@
   >
     Create Campaign
   </button>
-  <div class="table-container">
+
+  <!-- Campaign list table with campaign name as links and material sorting features  -->
+  <div class="table-container" >
     <table
       mat-table
       matSortActive="id"
@@ -43,5 +45,9 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
+      <!-- Material spinner before data is loaded  -->
+  <div class="d-flex justify-content-center align-items-center mt-5">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+  </div>
   </div>
 </section>

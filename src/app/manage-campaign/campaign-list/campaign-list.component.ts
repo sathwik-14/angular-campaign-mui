@@ -2,6 +2,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnInit,
   OnChanges,
   SimpleChanges,
   Output,
@@ -17,7 +18,7 @@ import { MatSort } from "@angular/material/sort";
   templateUrl: "./campaign-list.component.html",
   styleUrls: ["./campaign-list.component.scss"],
 })
-export class CampaignListComponent implements OnChanges {
+export class CampaignListComponent implements OnInit, OnChanges {
   dataSource = new MatTableDataSource<CampaignInterface>();
   displayedColumns = ["id", "name", "status", "ctr", "start date"];
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
@@ -27,16 +28,24 @@ export class CampaignListComponent implements OnChanges {
 
   constructor(private dataService: SharedDataService) {}
 
+  ngOnInit(): void {
+    this.isLoading = true;
+  }
+
+  /**
+   * sets data to table dataSource as soon as data is
+   * @param {any} changes:SimpleChanges
+   */
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["campaigns"] && this.campaigns) {
       this.dataSource.data = this.campaigns;
       this.dataSource.sort = this.sort;
+      this.isLoading = false;
     }
   }
 
   /**
-   * Description
-   * @returns {any} 
+   * toggle form to show/hide campaign list
    */
   toggle() {
     this.toggleForm.emit();

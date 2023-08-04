@@ -7,7 +7,7 @@ import { CampaignInterface } from "../manage-campaign/types/campaign.interface";
 })
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {
-    const campaigns:CampaignInterface[] = [
+    const campaigns: CampaignInterface[] = [
       {
         id: "P001",
         name: "Summer Sale",
@@ -48,16 +48,17 @@ export class InMemoryDataService implements InMemoryDbService {
     return { campaigns };
   }
 
-  genId(campaigns:CampaignInterface[]):string {
-    let newId = ''
-      let len = campaigns.length;
-      if (len <10)
-      newId = 'P00'+(len+1);
-      else if (len <100)
-      newId = 'P0'+(len+1)
-      else
-      newId = 'p'+(len+1)
-    return newId
+  /**
+   * generate new campaign id for every new object inserted
+   * @param {any} campaigns:CampaignInterface[]
+   * @returns {string} newID
+   */
+  genId(campaigns: CampaignInterface[]): string {
+    let newId = "";
+    let len = campaigns.length;
+    if (len < 10) newId = "P00" + (len + 1);
+    else if (len < 100) newId = "P0" + (len + 1);
+    else newId = "p" + (len + 1);
+    return newId;
   }
-
 }
