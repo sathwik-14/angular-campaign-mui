@@ -4,7 +4,14 @@ import { ManageCampaignComponent } from "./manage-campaign.component";
 
 const routes: Routes = [
   { path: "", component: ManageCampaignComponent },
-  { path: ":id", loadComponent:()=> import ('./campaign-info/campaign-info.component').then(e => e.CampaignInfoComponent)  },
+  {
+    path: ":id",
+    loadComponent: () =>
+      import("./campaign-info/campaign-info.component").then(
+        (e) => e.CampaignInfoComponent
+      ),
+    children: [],
+  },
 ];
 
 @NgModule({

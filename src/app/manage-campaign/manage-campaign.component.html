@@ -12,10 +12,7 @@
       <span class="fs-7 text-muted">{{ newCampaignName }}</span>
     </div>
 
-    <mat-card
-      class="p-2 p-lg-4 mt-2 mt-lg-4"
-      [ngClass]="showForm ? '' : 'fadeIn'"
-    >
+    <mat-card class="p-lg-4 mt-2 mt-lg-4" [ngClass]="showForm ? '' : 'fadeIn'">
       <mat-card-content>
         <!-- New campaign form component  -->
         <app-campaign-form

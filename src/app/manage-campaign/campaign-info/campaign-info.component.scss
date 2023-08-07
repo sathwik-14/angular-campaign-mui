@@ -20,6 +20,9 @@ section {
     border-radius: 1rem;
     background-color: #d4d2d4;
   }
+  .table-item {
+    border-bottom: rgba(black,.1) 1px solid;
+  }
 }
 
 .demo-section + .demo-section {
