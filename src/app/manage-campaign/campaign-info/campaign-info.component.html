@@ -166,7 +166,7 @@
       *ngIf="!foundObject"
       class="d-flex flex-column gap-3 justify-content-center align-items-center text-muted p-5"
     >
-      <mat-spinner *ngIf="!result"></mat-spinner>
+      <mat-spinner [diameter]="70" *ngIf="!result"></mat-spinner>
       <div *ngIf="result" class="text-center">
         <mat-icon
           style="width: unset; height: unset; font-size: 5rem"

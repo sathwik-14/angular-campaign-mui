@@ -15,10 +15,12 @@ import { MatSortModule } from '@angular/material/sort';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './services/in-memory-data.service';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [AppComponent,
-  AppNavComponent],
+  AppNavComponent,
+  PageNotFoundComponent],
   imports: [HttpClientModule,HttpClientInMemoryWebApiModule.forRoot(
     InMemoryDataService, { dataEncapsulation: false }
   ),BrowserModule, AppRoutingModule, BrowserAnimationsModule, MatIconModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatListModule, MatTableModule, MatPaginatorModule, MatSortModule],
