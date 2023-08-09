@@ -114,14 +114,14 @@
               <div>{{ i + 1 }}</div>
               <div class="d-flex flex-grow-1 align-items-center">
                 <input
-                  #place
+                  #loc
                   matInput
                   class="list-name"
                   [ngClass]="{ 'edit-mode': isEditable(i) }"
                   (blur)="toggleEditable(null)"
                   [value]="place.value"
                   [readonly]="!isEditable(i)"
-                  (input)="onInputValueChanged(place.value, i)"
+                  (input)="onInputValueChanged(loc.value, i)"
                   />
                 <button
                   mat-icon-button

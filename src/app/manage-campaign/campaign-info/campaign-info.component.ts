@@ -60,7 +60,6 @@ export class CampaignInfoComponent implements OnInit {
     this.sharedDataService.getCampaign(this.itemId).subscribe((data) => {
       this.foundObject = data;
       this.result = true;
-      console.log("updated")
     });
   }
 

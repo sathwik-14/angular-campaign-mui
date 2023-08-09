@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CampaignInfoComponent } from './campaign-info.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 
 describe('CampaignInfoComponent', () => {
   let component: CampaignInfoComponent;
@@ -8,7 +9,17 @@ describe('CampaignInfoComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CampaignInfoComponent]
+      imports: [HttpClientModule],
+      providers:[{ provide: ActivatedRoute,
+        useValue: {
+            snapshot: {
+                paramMap: {
+                    get(): string {
+                        return 'P001';
+                    },
+                },
+            },
+        },}]
     });
     fixture = TestBed.createComponent(CampaignInfoComponent);
     component = fixture.componentInstance;
