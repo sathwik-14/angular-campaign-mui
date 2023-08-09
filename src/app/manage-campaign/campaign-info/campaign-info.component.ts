@@ -1,5 +1,4 @@
-import { Component, Inject } from "@angular/core";
-import { OnInit } from "@angular/core";
+import { Component, Inject, OnInit} from "@angular/core";
 import { ActivatedRoute, RouterModule } from "@angular/router";
 import { SharedDataService } from "src/app/services/data.service";
 import { CampaignInterface } from "../types/campaign.interface";
@@ -14,8 +13,8 @@ import {
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { MatCardModule } from "@angular/material/card";
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { CampaignModule } from "../manage-campaign.module";
 
 export interface DialogData {
   name: string;
@@ -24,13 +23,22 @@ export interface DialogData {
 
 @Component({
   standalone: true,
-  imports: [MatProgressSpinnerModule,MatCardModule, CommonModule, MatIconModule, MatButtonModule],
+  imports: [
+    MatProgressSpinnerModule,
+    MatCardModule,
+    CommonModule,
+    MatIconModule,
+    MatButtonModule,
+    CampaignModule,
+  ],
   selector: "app-campaign-info",
   templateUrl: "./campaign-info.component.html",
   styleUrls: ["./campaign-info.component.scss"],
 })
 export class CampaignInfoComponent implements OnInit {
-  result = false
+  newCampaignName = "new";
+  showForm = false;
+  result = false;
   showAlert = false;
   itemId!: string;
   campaigns!: CampaignInterface[];
@@ -45,10 +53,19 @@ export class CampaignInfoComponent implements OnInit {
 
   ngOnInit() {
     this.itemId = this.route.snapshot.paramMap.get("id")!;
+    this.getUpdatedData();
+  }
+
+  getUpdatedData() {
     this.sharedDataService.getCampaign(this.itemId).subscribe((data) => {
       this.foundObject = data;
       this.result = true;
+      console.log("updated")
     });
+  }
+
+  toggleForm() {
+    this.showForm = !this.showForm;
   }
 
   /**
@@ -59,6 +76,29 @@ export class CampaignInfoComponent implements OnInit {
       data: { name: this.foundObject.name, id: this.foundObject.id },
     });
     dialogRef.afterClosed().subscribe((result) => {});
+  }
+
+  /**
+   * add a new campaign and get the updated data from dataService
+   * @param {CampaignInterface} newCampaign
+   */
+  updateCampaign(newCampaign: CampaignInterface) {
+    this.toggleForm()
+    this.sharedDataService
+      .getCampaign(this.foundObject.id)
+      .subscribe((data) => {
+        this.result = false;
+        this.foundObject=''
+        newCampaign.id = data.id;
+        newCampaign.status = data.status;
+        newCampaign.ctr = data.ctr;
+        newCampaign["start date"] = data["start date"];
+        this.sharedDataService
+          .updateCampaign(newCampaign as CampaignInterface)
+          .subscribe((campaign: any) => {
+            this.getUpdatedData()
+          });
+      });
   }
 
   /**
@@ -82,7 +122,11 @@ export class CampaignInfoComponent implements OnInit {
   providers: [SharedDataService],
   selector: "dialog-overview-example-dialog",
   template: `
-    <div mat-dialog-title class="d-flex align-items-center gap-2" style="color: red;vertical-align:middle;">
+    <div
+      mat-dialog-title
+      class="d-flex align-items-center gap-2"
+      style="color: red;vertical-align:middle;"
+    >
       <mat-icon fontIcon="error"></mat-icon>
       <div>Confirm Delete</div>
     </div>
@@ -108,7 +152,6 @@ export class DialogOverviewExampleDialog {
   ) {}
 
   deleteData() {
-    // this.sharedDataService.deleteData(this.data.id);
     this.sharedDataService.deleteCampaign(this.data.id).subscribe();
     this.onNoClick();
     this.router.navigate(["/campaign"]);

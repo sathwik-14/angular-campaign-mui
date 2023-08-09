@@ -64,6 +64,10 @@ export class SharedDataService {
     );
   }
 
+  /**
+   * add new campaign
+   * @param {any} campaign:CampaignInterface
+   */
   addCampaign(campaign: CampaignInterface): Observable<CampaignInterface> {
     return this.http
       .post<CampaignInterface>(this.campaignUrl, campaign, this.httpOptions)
@@ -75,10 +79,24 @@ export class SharedDataService {
       );
   }
 
+    /**
+   * update existing campaign
+   * @param {any} campaign:CampaignInterface
+   */
+    updateCampaign(campaign: CampaignInterface): Observable<CampaignInterface> {
+      return this.http
+        .post<CampaignInterface>(`${this.campaignUrl}/${campaign.id}`,campaign, this.httpOptions  )
+        .pipe(
+          tap((newCampaign: CampaignInterface) =>
+            this.log(`updated campaign w/ id=`)
+          ),
+          catchError(this.handleError<CampaignInterface>("updateCampaign"))
+        );
+    }
+
   /** DELETE: delete the hero from the server */
   deleteCampaign(id: string): Observable<CampaignInterface> {
     const url = `${this.campaignUrl}/${id}`;
-
     return this.http.delete<CampaignInterface>(url, this.httpOptions).pipe(
       tap((_) => this.log(`deleted hero id=${id}`)),
       catchError(this.handleError<CampaignInterface>("deleteHero"))

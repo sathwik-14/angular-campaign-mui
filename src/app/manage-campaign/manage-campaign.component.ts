@@ -45,6 +45,7 @@ export class ManageCampaignComponent implements OnInit {
         this.getCampaignData();
         this.openAddSnackBar();
       });
+      this.toggleForm()
   }
 
   /**

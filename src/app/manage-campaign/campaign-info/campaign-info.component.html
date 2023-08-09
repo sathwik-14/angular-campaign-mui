@@ -8,6 +8,7 @@
     <!-- campaign details main content -->
 
     <mat-card-content *ngIf="foundObject">
+      <ng-container *ngIf="!showForm">
       <div class="d-flex flex-column flex-lg-row gap-5 justify-content-center">
         <div class="text-center mb-2 flex-grow-1">
           <svg
@@ -144,7 +145,7 @@
       <!-- Delete and back buttons  -->
 
       <div class="d-flex gap-2 mt-5 mb-3 justify-content-center">
-        <button mat-stroked-button color="primary">
+        <button mat-stroked-button color="primary" (click)="toggleForm()">
           <mat-icon fontIcon="edit-pencil"></mat-icon>
           Edit
         </button>
@@ -158,6 +159,12 @@
           <mat-icon fontIcon="west"></mat-icon>
         </button>
       </div>
+    </ng-container>
+      <app-campaign-form *ngIf="showForm"  (toggleForm)="toggleForm()"
+      [showForm]="showForm"
+      [editData]="foundObject"
+      (addCampaign)="updateCampaign($event)"
+      ></app-campaign-form>
     </mat-card-content>
 
     <!-- Content if campaign not found  -->
@@ -173,6 +180,12 @@
           fontIcon="info"
         ></mat-icon>
         <div class="text-center h1 mt-5">Ah ! Campaign not found</div>
+        <div class="text-center my-3">
+          <button mat-button (click)="goBack()">
+            Back
+            <mat-icon fontIcon="west"></mat-icon>
+          </button>
+        </div>
       </div>
     </mat-card-content>
   </mat-card>

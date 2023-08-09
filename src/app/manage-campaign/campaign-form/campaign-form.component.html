@@ -121,7 +121,8 @@
                   (blur)="toggleEditable(null)"
                   [value]="place.value"
                   [readonly]="!isEditable(i)"
-                />
+                  (input)="onInputValueChanged(place.value, i)"
+                  />
                 <button
                   mat-icon-button
                   *ngIf="!isEditable(i)"

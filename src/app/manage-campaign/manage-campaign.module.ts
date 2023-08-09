@@ -46,5 +46,6 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
     ManageCampaignRouting,
   ],
   providers: [SharedDataService],
+  exports: [CampaignFormComponent]
 })
 export class CampaignModule {}

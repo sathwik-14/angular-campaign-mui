@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
 import { Validators, FormBuilder, FormArray } from "@angular/forms";
 import { SharedDataService } from "src/app/services/data.service";
 import { CampaignInterface } from "../types/campaign.interface";
@@ -8,16 +8,53 @@ import {
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { BreakpointObserver } from "@angular/cdk/layout";
+import { Router } from "@angular/router";
 @Component({
   selector: "app-campaign-form",
   templateUrl: "./campaign-form.component.html",
   styleUrls: ["./campaign-form.component.scss"],
 })
-export class CampaignFormComponent {
+export class CampaignFormComponent implements OnInit{
+  @Input() showForm!: boolean;
+  @Input() campaignName: any;
+  @Input() editData: any ;
+  @Output() toggleForm = new EventEmitter<boolean>();
+  @Output() campaignNameChange = new EventEmitter<string>();
+  @Output() addCampaign = new EventEmitter<CampaignInterface>();
+  campaignForm:any;
+  newCampaign: any;
+  category: boolean = false;
+  categories = ["first", "second", "third"];
+  edit: boolean = false;
+  browse: boolean = false;
+  application: boolean = false;
   stepperOrientation: Observable<StepperOrientation>;
+
+  ngOnInit(): void {
+    if(this.editData){
+      this.campaignForm = this.fb.group({
+        name: [this.editData.name, Validators.required],
+        objective: [this.editData.objective, Validators.required],
+        categorySelect: [this.editData.category],
+        offerSelect: [this.editData.offer],
+        comments: [this.editData.comment],
+        locations: this.editData.location?this.fb.array([...this.editData.location]):this.fb.array([]),
+      });
+    }else {
+      this.campaignForm = this.fb.group({
+        name: ["", Validators.required],
+        objective: ["", Validators.required],
+        categorySelect: ["select"],
+        offerSelect: ["select"],
+        comments: [""],
+        locations: this.fb.array([]),
+      });
+    }
+  }
 
   constructor(
     private dataservice: SharedDataService,
+    private router: Router,
     private fb: FormBuilder,
     breakpointObserver: BreakpointObserver
   ) {
@@ -26,14 +63,7 @@ export class CampaignFormComponent {
       .pipe(map(({ matches }) => (matches ? "horizontal" : "vertical")));
   }
 
-  campaignForm = this.fb.group({
-    name: ["", Validators.required],
-    objective: ["", Validators.required],
-    categorySelect: ["select"],
-    offerSelect: ["select"],
-    comments: [""],
-    locations: this.fb.array([]),
-  });
+
 
   /**
    * getter for the location
@@ -58,22 +88,6 @@ export class CampaignFormComponent {
   get objective() {
     return this.campaignForm.get("objective");
   }
-
-  @Input() showForm!: boolean;
-  @Input() campaignName: any;
-  @Output() toggleForm = new EventEmitter<boolean>();
-  @Output() campaignNameChange = new EventEmitter<string>();
-  @Output() addCampaign = new EventEmitter<CampaignInterface>();
-  newCampaign: any;
-  category: boolean = false;
-  categories = ["first", "second", "third"];
-  edit: boolean = false;
-  showFirstPage: boolean = true;
-  showSecondPage: boolean = false;
-  showThirdPage: boolean = false;
-  showFourthPage: boolean = false;
-  browse: boolean = false;
-  application: boolean = false;
 
   /**
    * Update campaign name in the parent component
@@ -127,6 +141,13 @@ export class CampaignFormComponent {
     this.toggleForm.emit(false);
   }
 
+  // Your onInputValueChanged function
+  onInputValueChanged(newValue: string, index: number): void {
+    const control = this.locations.at(index);
+    control.setValue(newValue); // Update the value of the form control
+  }
+
+
   /**
    * Form data is stored in an object and sent to the parent component
    */
@@ -140,8 +161,6 @@ export class CampaignFormComponent {
       location: this.campaignForm.get("locations")?.value,
     };
     this.addCampaign.emit(this.newCampaign);
-    this.showForm = false;
-    this.toggleForm.emit(this.showForm);
   }
   toggleBrowse() {
     this.browse = !this.browse;

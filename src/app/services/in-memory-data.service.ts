@@ -61,4 +61,10 @@ export class InMemoryDataService implements InMemoryDbService {
     else newId = "p" + (len + 1);
     return newId;
   }
+
+  // protected getHttpMethodMap() {
+  //   const originalMap = super.getHttpMethodMap();
+  //   originalMap[HttpMethod.Patch] = 'PATCH';
+  //   return originalMap;
+  // }
 }
