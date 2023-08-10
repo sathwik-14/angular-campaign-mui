@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit} from "@angular/core";
+import { Component, Inject, OnInit } from "@angular/core";
 import { ActivatedRoute, RouterModule } from "@angular/router";
 import { SharedDataService } from "src/app/services/data.service";
 import { CampaignInterface } from "../types/campaign.interface";
@@ -15,6 +15,8 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatCardModule } from "@angular/material/card";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { CampaignModule } from "../manage-campaign.module";
+import { SnackbarComponent } from "../snackbar/snackbar/snackbar.component";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 export interface DialogData {
   name: string;
@@ -47,7 +49,8 @@ export class CampaignInfoComponent implements OnInit {
     private sharedDataService: SharedDataService,
     private route: ActivatedRoute,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar
   ) {}
   foundObject!: any;
 
@@ -82,12 +85,12 @@ export class CampaignInfoComponent implements OnInit {
    * @param {CampaignInterface} newCampaign
    */
   updateCampaign(newCampaign: CampaignInterface) {
-    this.toggleForm()
+    this.toggleForm();
     this.sharedDataService
       .getCampaign(this.foundObject.id)
       .subscribe((data) => {
         this.result = false;
-        this.foundObject=''
+        this.foundObject = "";
         newCampaign.id = data.id;
         newCampaign.status = data.status;
         newCampaign.ctr = data.ctr;
@@ -95,9 +98,21 @@ export class CampaignInfoComponent implements OnInit {
         this.sharedDataService
           .updateCampaign(newCampaign as CampaignInterface)
           .subscribe((campaign: any) => {
-            this.getUpdatedData()
+            this.getUpdatedData();
+            this.openSnackBar(campaign.name);
           });
       });
+  }
+
+  /**
+   * Opens a snackbar component that displays status of update
+   * @param {any} name:string
+   */
+  openSnackBar(name: string) {
+    this._snackBar.openFromComponent(SnackbarComponent, {
+      duration: 5 * 1000,
+      data: `'${name}' updated`,
+    });
   }
 
   /**

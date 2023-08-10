@@ -1,7 +1,7 @@
 // shared-data.service.ts
-import { Observable, of, catchError, map, tap } from "rxjs";
+import { Observable, of, catchError, map, tap, switchMap, throwError } from "rxjs";
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { CampaignInterface } from "../manage-campaign/types/campaign.interface";
 import { MessageService } from "./message-service.service";
 
@@ -11,7 +11,7 @@ import { MessageService } from "./message-service.service";
 export class SharedDataService {
   constructor(
     private http: HttpClient,
-    private messageService: MessageService
+    private messageService: MessageService,
   ) {}
 
   private log(message: string) {
@@ -49,9 +49,11 @@ export class SharedDataService {
    * @returns {Observable}
    */
   getCampaigns(): Observable<CampaignInterface[]> {
-    return this.http.get<CampaignInterface[]>(this.campaignUrl).pipe(
+    return this.http.get<CampaignInterface[]>('api/campaigns').pipe(
       tap((_) => this.log("fetched heroes")),
-      catchError(this.handleError<CampaignInterface[]>("getCampaign", []))
+      catchError((error: HttpErrorResponse)=>{
+        this.messageService.handleHttpError(error)
+        return throwError(error)})
     );
   }
 
@@ -60,7 +62,10 @@ export class SharedDataService {
     const url = `${this.campaignUrl}/${id}`;
     return this.http.get<CampaignInterface>(url).pipe(
       tap((_) => this.log(`fetched hero id=${id}`)),
-      catchError(this.handleError<CampaignInterface>(`getHero id=${id}`))
+      catchError((error: HttpErrorResponse)=>{
+        this.messageService.handleHttpError(error);
+        return throwError(error);
+      })
     );
   }
 
@@ -70,29 +75,39 @@ export class SharedDataService {
    */
   addCampaign(campaign: CampaignInterface): Observable<CampaignInterface> {
     return this.http
-      .post<CampaignInterface>(this.campaignUrl, campaign, this.httpOptions)
+      .post<CampaignInterface>("api/campaigns", campaign, this.httpOptions)
       .pipe(
         tap((newCampaign: CampaignInterface) =>
           this.log(`added campaign w/ id=${newCampaign.id}`)
         ),
-        catchError(this.handleError<CampaignInterface>("addCampaign"))
+        catchError((error: HttpErrorResponse)=>{
+          this.messageService.handleHttpError(error);
+          return throwError(error);
+        })
       );
   }
 
-    /**
+  /**
    * update existing campaign
    * @param {any} campaign:CampaignInterface
    */
-    updateCampaign(campaign: CampaignInterface): Observable<CampaignInterface> {
-      return this.http
-        .post<CampaignInterface>(`${this.campaignUrl}/${campaign.id}`,campaign, this.httpOptions  )
-        .pipe(
-          tap((newCampaign: CampaignInterface) =>
-            this.log(`updated campaign w/ id=`)
-          ),
-          catchError(this.handleError<CampaignInterface>("updateCampaign"))
-        );
-    }
+  updateCampaign(campaign: CampaignInterface): Observable<CampaignInterface> {
+    return this.http
+      .post<CampaignInterface>(
+        `${this.campaignUrl}/${campaign.id}`,
+        campaign,
+        this.httpOptions
+      )
+      .pipe(
+        switchMap(() =>
+          this.http.get<CampaignInterface>(`${this.campaignUrl}/${campaign.id}`)
+        ),
+        tap((updatedCampaign) =>
+          this.log(`updated campaign w/ id=${updatedCampaign.id}`)
+        ),
+        catchError(this.handleError<CampaignInterface>("updateCampaign"))
+      );
+  }
 
   /** DELETE: delete the hero from the server */
   deleteCampaign(id: string): Observable<CampaignInterface> {

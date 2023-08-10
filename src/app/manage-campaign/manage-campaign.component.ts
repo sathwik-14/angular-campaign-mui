@@ -1,7 +1,9 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from "@angular/core";
 import { CampaignInterface } from "./types/campaign.interface";
 import { SharedDataService } from "../services/data.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { SnackbarComponent } from "./snackbar/snackbar/snackbar.component";
+import { MessageService } from "../services/message-service.service";
 @Component({
   selector: "app-campaign",
   templateUrl: "./manage-campaign.component.html",
@@ -10,11 +12,19 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 export class ManageCampaignComponent implements OnInit {
   constructor(
     private dataService: SharedDataService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private messageService: MessageService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.getCampaignData();
+    this.dataService.getCampaigns().subscribe((data) => {
+      this.campaigns = data;
+      this.cdr.detectChanges(); // Manually trigger change detection
+    });
+    this.messageService.errorOccurred.subscribe((errorMessage) => {
+      this.openSnackBar(errorMessage);
+    });
   }
 
   campaigns: CampaignInterface[] = [];
@@ -43,9 +53,9 @@ export class ManageCampaignComponent implements OnInit {
       .addCampaign(newCampaign as CampaignInterface)
       .subscribe((campaign: any) => {
         this.getCampaignData();
-        this.openAddSnackBar();
+        this.openSnackBar(`Campaign '${campaign.name}' added successfully 📢`);
       });
-      this.toggleForm()
+    this.toggleForm();
   }
 
   /**
@@ -59,9 +69,9 @@ export class ManageCampaignComponent implements OnInit {
 
   /**
    * updates campaign name based on campaign-name changes in child component
-   * @param {any} newName:string
-   * @returns {any}
+   * @param {string} newName
    */
+
   onCampaignNameChange(newName: string) {
     this.newCampaignName = newName;
   }
@@ -69,25 +79,10 @@ export class ManageCampaignComponent implements OnInit {
   /**
    * Opens the snackbar component on adding a new campaign
    */
-  openAddSnackBar() {
-    this._snackBar.openFromComponent(AddCampaignComponent, {
+  openSnackBar(data: string) {
+    this._snackBar.openFromComponent(SnackbarComponent, {
       duration: 5 * 1000,
+      data,
     });
   }
 }
-
-@Component({
-  selector: "snack-bar-component-example-snack",
-  template: `
-    <span class="example-pizza-party"> Campaign added successfully 📢 </span>
-  `,
-  styles: [
-    `
-      .example-pizza-party {
-        color: #fefefe;
-      }
-    `,
-  ],
-  standalone: true,
-})
-export class AddCampaignComponent {}
