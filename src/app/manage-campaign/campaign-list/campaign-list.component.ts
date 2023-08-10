@@ -13,40 +13,33 @@ import { CampaignInterface } from "../types/campaign.interface";
 import { SharedDataService } from "../../services/data.service";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatSort } from "@angular/material/sort";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-campaign-list",
   templateUrl: "./campaign-list.component.html",
   styleUrls: ["./campaign-list.component.scss"],
 })
-export class CampaignListComponent implements  AfterContentInit, OnChanges {
+export class CampaignListComponent implements OnInit {
   dataSource = new MatTableDataSource<CampaignInterface>();
   displayedColumns = ["id", "name", "status", "ctr", "start date"];
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
-  @Input() campaigns!: CampaignInterface[];
+  @Input() campaigns?: Observable<CampaignInterface[]>;
   @Output() toggleForm = new EventEmitter<any>();
   isLoading = true;
 
-  constructor(private dataService: SharedDataService) {
-    this.isLoading = true
-  }
-
-
-  ngAfterContentInit(): void {
-    this.isLoading = true
-  }
-
-
+  constructor(private dataService: SharedDataService) {}
 
   /**
-   * set updated data to table dataSource 
-   * @param {any} changes:SimpleChanges
+   * Set data to data source of table
    */
-  ngOnChanges(changes: SimpleChanges): void {
-      this.dataSource.data = this.campaigns;
+  ngOnInit(): void {
+    this.isLoading = true;
+    this.campaigns?.subscribe((data) => {
+      this.dataSource.data = data;
       this.dataSource.sort = this.sort;
       this.isLoading = false;
-      console.log('hello')
+    });
   }
 
   /**

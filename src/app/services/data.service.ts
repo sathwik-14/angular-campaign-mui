@@ -1,5 +1,5 @@
 // shared-data.service.ts
-import { Observable, of, catchError, map, tap, switchMap, throwError } from "rxjs";
+import { Observable, of, catchError, tap, switchMap, throwError } from "rxjs";
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { CampaignInterface } from "../manage-campaign/types/campaign.interface";

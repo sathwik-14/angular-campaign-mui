@@ -4,40 +4,28 @@ import { SharedDataService } from "../services/data.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { SnackbarComponent } from "./snackbar/snackbar/snackbar.component";
 import { MessageService } from "../services/message-service.service";
+import { Observable } from "rxjs";
 @Component({
   selector: "app-campaign",
   templateUrl: "./manage-campaign.component.html",
   styleUrls: ["./manage-campaign.component.scss"],
 })
 export class ManageCampaignComponent implements OnInit {
-  constructor(
-    private dataService: SharedDataService,
-    private _snackBar: MatSnackBar,
-    private messageService: MessageService,
-    private cdr: ChangeDetectorRef
-  ) {}
-
-  ngOnInit() {
-    this.dataService.getCampaigns().subscribe((data) => {
-      this.campaigns = data;
-      this.cdr.detectChanges(); // Manually trigger change detection
-    });
-    this.messageService.errorOccurred.subscribe((errorMessage) => {
-      this.openSnackBar(errorMessage);
-    });
-  }
-
-  campaigns: CampaignInterface[] = [];
+  campaigns$?: Observable<CampaignInterface[]>;
   newCampaignName: string = "New Campaign";
   showForm: boolean = false;
   ascOrder = true;
 
-  /**
-   * get campaign data from data service and store it in campaigns variable
-   */
-  getCampaignData(): void {
-    this.dataService.getCampaigns().subscribe((data) => {
-      this.campaigns = data;
+  constructor(
+    private dataService: SharedDataService,
+    private _snackBar: MatSnackBar,
+    private messageService: MessageService,
+  ) {}
+
+  ngOnInit() {
+    this.campaigns$ = this.dataService.getCampaigns();
+    this.messageService.errorOccurred.subscribe((errorMessage) => {
+      this.openSnackBar(errorMessage);
     });
   }
 
@@ -52,7 +40,6 @@ export class ManageCampaignComponent implements OnInit {
     this.dataService
       .addCampaign(newCampaign as CampaignInterface)
       .subscribe((campaign: any) => {
-        this.getCampaignData();
         this.openSnackBar(`Campaign '${campaign.name}' added successfully 📢`);
       });
     this.toggleForm();
@@ -64,7 +51,6 @@ export class ManageCampaignComponent implements OnInit {
   toggleForm() {
     this.showForm = !this.showForm;
     this.newCampaignName = "New Campaign";
-    this.getCampaignData();
   }
 
   /**

@@ -24,7 +24,7 @@
         ></app-campaign-form>
         <!-- Campaign list component  -->
         <app-campaign-list
-          [campaigns]="campaigns"
+          [campaigns]="campaigns$"
           (toggleForm)="toggleForm()"
           *ngIf="!showForm"
         ></app-campaign-list>
