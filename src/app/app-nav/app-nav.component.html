@@ -16,7 +16,8 @@
       <a
         mat-list-item
         class="d-flex justify-content-center align-items-center"
-        
+        [routerLink]="['dashboard']"
+        routerLinkActive="active-link"
       >
         <mat-icon matListItemIcon fontIcon="dashboard"></mat-icon>
         <span matListItemTitle>Dashboard</span>
@@ -26,6 +27,8 @@
       <a
         mat-list-item
         class="d-flex justify-content-center align-items-center"
+        [routerLink]="['analytics']"
+        routerLinkActive="active-link"
       >
         <mat-icon matListItemIcon fontIcon="bar_chart"></mat-icon>
         <span matListItemTitle>Analytics</span>
@@ -46,6 +49,8 @@
       <a
         mat-list-item
         class="d-flex justify-content-center align-items-center"
+        [routerLink]="['audience']"
+        routerLinkActive="active-link"
       >
         <mat-icon matListItemIcon fontIcon="people"></mat-icon>
         <span matListItemTitle>Audience</span>

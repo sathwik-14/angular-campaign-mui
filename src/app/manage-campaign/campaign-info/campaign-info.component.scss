@@ -6,22 +6,27 @@
 
 section {
   .Completed {
-    padding: .6rem;
+    padding: 0.6rem;
     border-radius: 1rem;
     background-color: #bdeacd;
   }
   .Scheduled {
-    padding: .6rem;
+    padding: 0.6rem;
     border-radius: 1rem;
     background-color: #b7cdfd;
   }
   .Draft {
-    padding: .6rem;
+    padding: 0.6rem;
     border-radius: 1rem;
     background-color: #d4d2d4;
   }
   .table-item {
-    border-bottom: rgba(black,.1) 1px solid;
+    border-bottom: rgba(black, 0.1) 1px solid;
+    overflow: auto;
+    span {
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
   }
 }
 

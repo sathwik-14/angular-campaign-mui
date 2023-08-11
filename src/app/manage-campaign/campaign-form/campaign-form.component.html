@@ -12,6 +12,7 @@
         <mat-label>Campaign Name </mat-label>
         <input
           (change)="updateCampaignName()"
+          maxlength="20"
           matInput
           type="text"
           formControlName="name"
@@ -25,6 +26,7 @@
         <input
           matInput
           type="text"
+          maxlength="100"
           formControlName="objective"
           placeholder="Objective"
         />
@@ -56,6 +58,7 @@
         <mat-label>Additional Comments</mat-label>
         <textarea
           matInput
+          maxlength="400"
           rows="3"
           formControlName="comments"
           placeholder="Comments..."

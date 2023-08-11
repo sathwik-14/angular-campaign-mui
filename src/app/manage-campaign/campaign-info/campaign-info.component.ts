@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from "@angular/core";
-import { ActivatedRoute, RouterModule } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { SharedDataService } from "src/app/services/data.service";
 import { CampaignInterface } from "../types/campaign.interface";
 import { Router } from "@angular/router";
@@ -59,6 +59,9 @@ export class CampaignInfoComponent implements OnInit {
     this.getUpdatedData();
   }
 
+  /**
+   * Get updated campaign data and store it in foundObject property
+   */
   getUpdatedData() {
     this.sharedDataService.getCampaign(this.itemId).subscribe((data) => {
       this.foundObject = data;
@@ -66,6 +69,9 @@ export class CampaignInfoComponent implements OnInit {
     });
   }
 
+  /**
+   * Toggle between show/hide of form component
+   */
   toggleForm() {
     this.showForm = !this.showForm;
   }
@@ -127,10 +133,8 @@ export class CampaignInfoComponent implements OnInit {
   standalone: true,
   imports: [
     MatDialogModule,
-    CommonModule,
     NgIf,
     MatButtonModule,
-    RouterModule,
     MatIconModule,
   ],
   providers: [SharedDataService],
