@@ -1,5 +1,6 @@
 <section>
-  <app-nav>
+  <app-nav *ngIf="loggedIn">
     <router-outlet></router-outlet>
   </app-nav>
+  <router-outlet *ngIf="!loggedIn"></router-outlet>
 </section>

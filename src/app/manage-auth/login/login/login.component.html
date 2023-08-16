@@ -1,0 +1,24 @@
+<div class="container d-flex justify-content-center align-items-center mt-5 pt-5">
+    <mat-card class="d-flex flex-column justify-content-center align-items-center">
+        <mat-card-content>
+            <h1>Sign In</h1>
+            <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+                <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" ngModel #email="ngModel" name="email" email required >
+                </mat-form-field>
+                <span class="text-danger mb-3" *ngIf="email.invalid && email.touched">Invalid Email</span>
+                <mat-form-field>
+                    <mat-label>Password</mat-label>
+                    <input matInput type="password" ngModel name="password"  password required>
+                </mat-form-field>      
+                <p class="text-danger" *ngIf="invalidPassword">Invalid Email or Password</p>   
+                <p class="text-danger" *ngIf="invalidEmail">Email does not exist</p>       
+                <button mat-raised-button  [disabled]="f.invalid">Submit</button>
+            </form>
+            <p class="mt-3">
+                Don't have an account? <a href="registration">Sign Up</a>
+            </p>
+        </mat-card-content>
+    </mat-card>
+</div>

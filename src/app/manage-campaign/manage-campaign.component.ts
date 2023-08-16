@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { CampaignInterface } from "./types/campaign.interface";
 import { SharedDataService } from "../services/data.service";
 import { MatSnackBar } from "@angular/material/snack-bar";

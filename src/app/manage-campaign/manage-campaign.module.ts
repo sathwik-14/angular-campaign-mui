@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, NgModule } from "@angular/core";
+import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { CampaignFormComponent } from "./campaign-form/campaign-form.component";
 import { CampaignListComponent } from "./campaign-list/campaign-list.component";
@@ -20,6 +20,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { ManageCampaignRouting } from "./manage-campaign-routing.module";
 import { ManageCampaignComponent } from "./manage-campaign.component";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+
 @NgModule({
   declarations: [
     CampaignFormComponent,
