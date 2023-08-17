@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable,of } from 'rxjs';
+import { Observable,of, tap } from 'rxjs';
 
 
 @Injectable({
@@ -41,7 +41,11 @@ export class AuthService {
   };
 
   getUsers(): Observable<any> {
-    return this.http.get<any>('api/users')
+    return this.http.get<any>('http://localhost:3000/api/users').pipe(
+      tap(async (res) => {
+        console.log(res)
+      })
+    )
   }
 
   getUsersById(id: number): Observable<any> {

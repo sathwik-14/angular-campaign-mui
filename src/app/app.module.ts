@@ -11,6 +11,7 @@ import { MatListModule } from "@angular/material/list";
 import { MatTableModule } from "@angular/material/table";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
+import { MatMenuModule } from "@angular/material/menu";
 import { HttpClientModule } from "@angular/common/http";
 import { HttpClientInMemoryWebApiModule } from "angular-in-memory-web-api";
 import { InMemoryDataService } from "./services/in-memory-data.service";
@@ -32,6 +33,7 @@ import { AppNavComponent } from "./app-nav/app-nav.component";
     MatButtonModule,
     MatSidenavModule,
     MatListModule,
+    MatMenuModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,

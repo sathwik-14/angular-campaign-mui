@@ -29,15 +29,22 @@ export class LoginComponent {
     if (authService.isLogged())
      router.navigate(['/login']);
   }
+  // onSubmit(form: NgForm) {
+  //   this.invalidEmail = false;
+  //   this.invalidPassword = false;
+  //   let user = this.authService.getUsersByEmail(form.value.email);
+  //   if (user) {
+  //     if (user.password === form.value.password) {
+  //       this.authService.logIn(user)
+  //       this.router.navigate(['campaign'])
+  //     } else this.invalidPassword = true;
+  //   } else this.invalidEmail = true;
+  // }
+
   onSubmit(form: NgForm) {
     this.invalidEmail = false;
     this.invalidPassword = false;
-    let user = this.authService.getUsersByEmail(form.value.email);
-    if (user) {
-      if (user.password === form.value.password) {
-        this.authService.logIn(user)
-        this.router.navigate(['campaign'])
-      } else this.invalidPassword = true;
-    } else this.invalidEmail = true;
+    // this.authService.getUsers().subscribe(users=>console.log(users))
+    this.router.navigate(['campaign']);
   }
 }

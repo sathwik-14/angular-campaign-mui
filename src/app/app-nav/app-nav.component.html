@@ -10,7 +10,10 @@
   >
     <mat-toolbar>
       <mat-icon fontIcon="account_circle"></mat-icon>
-      &nbsp;Profile
+      <button mat-button [matMenuTriggerFor]="menu">Profile</button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="logout()">Logout</button>
+      </mat-menu>
     </mat-toolbar>
     <mat-nav-list>
       <a
@@ -70,6 +73,6 @@
       </button>
       <span>ANGULAR CAMPAIGN </span>
     </mat-toolbar>
-    <ng-content></ng-content>
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
